@@ -21,9 +21,9 @@ A comprehensive browser-based demonstration of 3D Secure v2 authentication flows
 npm install
 ```
 
-2. Build CSS (required before first run):
+2. Build the CSS:
 ```bash
-npm run build-css
+npm run build
 ```
 
 3. Start the proxy server:
@@ -33,16 +33,21 @@ npm start
 
 4. Open http://localhost:3002 in your browser
 
-### Development Mode
+### Development
 
-For development with auto-reload:
+The recommended way to run the project during development:
 ```bash
-npm run dev
+npm run watch
 ```
 
-To watch CSS changes during development:
+This will:
+- Build and watch CSS for changes
+- Auto-restart the server when files change
+- Sync browser updates automatically
+
+Alternatively, you can run just the server with auto-restart:
 ```bash
-npm run watch-css
+npm run dev
 ```
 
 ## How it Works
