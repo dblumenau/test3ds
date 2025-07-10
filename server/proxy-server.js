@@ -16,6 +16,8 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 const API_KEY = process.env.API_KEY;
 const API_BASE_URL = process.env.API_BASE_URL || 'https://service.sandbox.3dsecure.io';
+const USE_LOCAL_PROXY = process.env.USE_LOCAL_PROXY === 'true';
+const LOCAL_PROXY_URL = process.env.LOCAL_PROXY_URL || 'http://fbf-cde-card-linking-web-sdk-cde.localhost';
 
 // Validate required environment variables
 if (!API_KEY) {
@@ -43,18 +45,32 @@ app.use((req, res, next) => {
 // Proxy endpoint for 3DS API calls
 app.post('/api/3ds/:endpoint', async (req, res) => {
   const endpoint = req.params.endpoint;
-  const url = `${API_BASE_URL}/${endpoint}`;
+  let url;
   
-  console.log(`Proxying request to: ${url}`);
+  if (USE_LOCAL_PROXY) {
+    // Route through local application stack
+    url = `${LOCAL_PROXY_URL}/api/3ds-proxy/${endpoint}`;
+    console.log(`Routing through local proxy: ${url}`);
+  } else {
+    // Direct route to 3dsecure.io
+    url = `${API_BASE_URL}/${endpoint}`;
+    console.log(`Proxying request to: ${url}`);
+  }
+  
   console.log('Request body:', JSON.stringify(req.body, null, 2));
+  console.log(`Full URL being called: ${url}`);
   
   try {
-    const response = await axios.post(url, req.body, {
-      headers: {
-        'APIKey': API_KEY,
-        'Content-Type': 'application/json; charset=utf-8'
-      }
-    });
+    const headers = {
+      'Content-Type': 'application/json; charset=utf-8'
+    };
+    
+    // Only add API key for direct 3dsecure.io calls
+    if (!USE_LOCAL_PROXY) {
+      headers['APIKey'] = API_KEY;
+    }
+    
+    const response = await axios.post(url, req.body, { headers });
     
     console.log(`Response from ${endpoint}:`, JSON.stringify(response.data, null, 2));
     res.json(response.data);
@@ -73,4 +89,9 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`3DS Demo Proxy Server running at http://localhost:${PORT}`);
+  if (USE_LOCAL_PROXY) {
+    console.log(`Using local proxy at: ${LOCAL_PROXY_URL}`);
+  } else {
+    console.log(`Using direct 3DS API at: ${API_BASE_URL}`);
+  }
 });
