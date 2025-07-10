@@ -11,6 +11,8 @@ A comprehensive browser-based demonstration of 3D Secure v2 authentication flows
 - **Real-time API Response Logging**: See all API requests and responses as they happen
 - **Pattern-based Test Card System**: Understand how the last 4 digits determine test behavior
 - **Custom PAN Entry**: Test additional card numbers beyond the pre-configured ones
+- **Interactive Test Card Reference**: Modal popup with comprehensive pattern guide and examples
+- **Dark Theme UI**: Professional interface optimized for 1920×1080 displays
 
 ## Setup
 
@@ -19,12 +21,29 @@ A comprehensive browser-based demonstration of 3D Secure v2 authentication flows
 npm install
 ```
 
-2. Start the proxy server:
+2. Build CSS (required before first run):
+```bash
+npm run build-css
+```
+
+3. Start the proxy server:
 ```bash
 npm start
 ```
 
-3. Open http://localhost:3002 in your browser
+4. Open http://localhost:3002 in your browser
+
+### Development Mode
+
+For development with auto-reload:
+```bash
+npm run dev
+```
+
+To watch CSS changes during development:
+```bash
+npm run watch-css
+```
 
 ## How it Works
 
@@ -132,12 +151,19 @@ The dropdown includes test cards for:
 - 3DS Method variations (included, not included, timeout)
 - Enrollment status testing
 
-## Development
+## UI Layout
 
-For development with auto-reload:
-```bash
-npm run dev
-```
+The application features a 3-column layout optimized for 1920×1080 displays:
+- **Left Column (320px)**: TEST3DS branding, test card selection, and authentication flow status
+- **Middle Column (960px)**: API responses and current status display
+- **Right Column (640px)**: Challenge iframe for user interaction
+
+## Technologies Used
+
+- **Backend**: Node.js with Express for the proxy server
+- **Frontend**: Vanilla JavaScript with Tailwind CSS
+- **Build System**: PostCSS for CSS processing
+- **Styling**: Dark theme with custom color scheme
 
 ## Notes
 
