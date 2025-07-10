@@ -8,7 +8,7 @@
     "dev": "nodemon proxy-server.js",
     "build": "postcss styles.css -o dist/styles.css",
     "watch-css": "postcss styles.css -o dist/styles.css --watch",
-    "watch": "concurrently \"npm:watch-css\" \"npm:dev\" \"npm:browser-sync\" --names \"CSS,SERVER,BROWSER\" --prefix-colors \"blue,green,magenta\"",
+    "watch": "concurrently \"npm:watch-css\" \"BROWSERSYNC=true npm:dev\" \"npm:browser-sync\" --names \"CSS,SERVER,BROWSER\" --prefix-colors \"blue,green,magenta\"",
     "browser-sync": "browser-sync start --proxy localhost:3002 --files \"*.html,*.js,dist/**/*.css\" --no-notify --no-open"
   },
   "dependencies": {
