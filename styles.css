@@ -129,7 +129,7 @@
   
   /* Challenge iframe styles */
   #challengeIframe {
-    @apply w-full h-full border-2 border-3ds-primary rounded-lg;
+    @apply w-full h-full bg-white;
   }
   
   /* Spinner animation */

@@ -16,8 +16,8 @@
         <!-- Headers Row -->
         <div class="grid grid-cols-asymmetric bg-gray-700 border-b border-gray-600" style="height: 73px;">
             <!-- Column 1 Header -->
-            <div class="px-4 py-3 border-r border-gray-600 flex items-center">
-                <img src="3ds_logo.png" alt="TEST3DS Logo" class="h-10 w-10 mr-3">
+            <div class="px-4 py-2 border-r border-gray-600 flex items-center justify-center">
+                <img src="3ds_logo.png" alt="TEST3DS Logo" class="h-14 w-14 mr-3">
                 <h1 class="text-xl font-bold text-white">TEST3DS</h1>
             </div>
             <!-- Column 2 Header -->
@@ -52,9 +52,6 @@
                 <button id="startAuthBtn" onclick="startAuthentication()" class="btn btn-primary w-full mt-4 text-sm">
                     <span id="btnText">Start 3DS Authentication</span>
                     <span id="btnSpinner" class="spinner ml-2 hidden"></span>
-                </button>
-                <button id="resetBtn" onclick="resetDemo()" class="btn btn-secondary w-full mt-2 text-sm">
-                    Reset Demo
                 </button>
                 <button id="referenceBtn" onclick="showTestCardReference()" class="btn btn-secondary w-full mt-2 text-sm">
                     📋 Test Card Reference
@@ -103,6 +100,13 @@
                     </details>
                 </div>
             </div>
+            
+            <!-- Reset Button at Bottom -->
+            <div class="px-4 py-3 border-t border-gray-700">
+                <button id="resetBtn" onclick="resetDemo()" class="btn btn-secondary w-full text-sm">
+                    Reset Demo
+                </button>
+            </div>
         </div>
         
         <!-- Column 2: API Responses & Status (960px) -->
@@ -131,7 +135,7 @@
             <!-- Challenge Frame Container -->
             <div class="flex-1 px-6 py-3 bg-gray-800 overflow-hidden">
                 <div class="h-full rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
-                    <iframe id="challengeIframe" name="challengeIframe" class="hidden absolute inset-0 w-full h-full"></iframe>
+                    <iframe id="challengeIframe" name="challengeIframe" class="hidden absolute inset-0 w-full h-full bg-white"></iframe>
                     <div id="challengePlaceholder" class="h-full flex items-center justify-center text-gray-500">
                         <div class="text-center">
                             <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

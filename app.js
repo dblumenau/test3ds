@@ -1361,6 +1361,11 @@ function hideTestCardReference() {
 // Initialize on page load
 window.addEventListener('load', () => {
     populateTestCardDropdown();
+    
+    // Auto-select the manual challenge test card
+    const select = document.getElementById('cardNumber');
+    select.value = '4000100511110072';
+    
     updateStatus('Ready to start authentication...');
     updateTestInfo();
 });
