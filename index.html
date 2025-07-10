@@ -3,249 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Secure Browser Demo</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-        
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .full-width {
-            grid-column: 1 / -1;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        
-        button {
-            background-color: #3498db;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        button:hover {
-            background-color: #2980b9;
-        }
-        
-        button:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-        }
-        
-        .steps {
-            background: #ecf0f1;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        
-        .step {
-            padding: 10px;
-            margin: 5px 0;
-            background: white;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .step.active {
-            background: #3498db;
-            color: white;
-        }
-        
-        .step.completed {
-            background: #2ecc71;
-            color: white;
-        }
-        
-        .step.error {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .step-icon {
-            margin-right: 10px;
-            font-size: 20px;
-        }
-        
-        .api-response {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 15px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            overflow-x: auto;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .iframe-container {
-            margin-top: 20px;
-        }
-        
-        #challengeIframe {
-            width: 100%;
-            height: 600px;
-            border: 2px solid #3498db;
-            border-radius: 4px;
-            display: none;
-        }
-        
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .error-box {
-            background: #ffebee;
-            border-left: 4px solid #f44336;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            background-color: white;
-        }
-        
-        select:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        
-        .test-info {
-            background: #f0f8ff;
-            border: 1px solid #b0d4ff;
-            border-radius: 4px;
-            padding: 15px;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        
-        .test-info h4 {
-            margin: 0 0 10px 0;
-            color: #2c3e50;
-        }
-        
-        .test-info .expectation {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        
-        .test-info .version {
-            color: #3498db;
-        }
-        
-        .help-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .help-section details {
-            margin: 10px 0;
-        }
-        
-        .help-section summary {
-            cursor: pointer;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-    </style>
+    <title>3D Secure v2 Browser Demo</title>
+    <link href="dist/styles.css" rel="stylesheet">
 </head>
-<body>
-    <h1>3D Secure Browser Demo</h1>
-    
-    <div class="container">
-        <div class="section full-width">
-            <h2>Test Card Selection</h2>
-            <div class="form-group">
-                <label for="cardNumber">Select Test Card</label>
-                <select id="cardNumber" onchange="updateTestInfo()">
+<body class="h-screen overflow-hidden">
+    <!-- Main Container - Flexible height -->
+    <div class="w-[1920px] h-screen mx-auto grid grid-cols-asymmetric bg-gray-50">
+        <!-- Column 1: Card Selection & Authentication Flow (320px) -->
+        <div class="flex flex-col h-full overflow-hidden border-r border-gray-300 bg-white">
+            <!-- Header -->
+            <div class="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-3ds-primary to-blue-600">
+                <h1 class="text-xl font-bold text-white">3DS v2 Demo</h1>
+                <p class="text-sm text-blue-100">1920×1080 Optimized</p>
+            </div>
+            
+            <!-- Card Selection -->
+            <div class="px-4 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-3">Test Card Selection</h2>
+                <div class="form-group">
+                    <label for="cardNumber" class="form-label text-sm">Select Test Card</label>
+                    <select id="cardNumber" onchange="updateTestInfo()" class="form-select text-sm">
                     <optgroup label="Enrollment Tests">
                         <option value="9000100111111111">9000100111111111 - Card not enrolled</option>
                     </optgroup>
@@ -293,832 +70,183 @@
                     <optgroup label="Custom Test Configuration">
                         <option value="custom">Enter custom PAN...</option>
                     </optgroup>
-                </select>
-                <input type="text" id="customCardNumber" style="display:none; margin-top:10px;" placeholder="Enter 16-digit test card number (e.g., 4000100511112003)">
-            </div>
-            <div id="testInfo" class="test-info"></div>
-            <button id="startAuthBtn" onclick="startAuthentication()">Start 3DS Authentication</button>
-            
-            <div class="help-section">
-                <details>
-                    <summary>Understanding Test Card Patterns</summary>
-                    <p>The sandbox uses specific pre-configured test PANs. The last 4 digits determine behavior:</p>
-                    <ul>
-                        <li><strong>1st digit:</strong> Message version (0=all versions, 1=v2.1 only, 2=v2.2 only, 3=v2.3 only)</li>
-                        <li><strong>2nd digit:</strong> 3DS Method (0=included, 1=not included, 2=timeout)</li>
-                        <li><strong>3rd digit:</strong> ARes outcome (0-5=frictionless outcomes, 6=DS timeout, 7=challenge required)</li>
-                        <li><strong>4th digit:</strong> Challenge behavior when 3rd=7 (0=auto-pass, 1=auto-fail, 2=manual)</li>
-                    </ul>
-                    <p><strong>Note:</strong> Only specific test PANs are configured in the sandbox. The documented examples above are guaranteed to work. For custom PANs, you need to use valid test card prefixes with the appropriate last 4 digits.</p>
-                </details>
-                <details>
-                    <summary>Creating Custom Test PANs</summary>
-                    <p>Based on the documented examples, valid test PANs appear to follow this pattern:</p>
-                    <ul>
-                        <li>16 digits total length</li>
-                        <li>Common prefixes: 3000, 4000, 5000, 6000, 7000, 9000</li>
-                        <li>Middle section often contains: 10XX1111 where XX varies</li>
-                        <li>Last 4 digits: Follow the pattern rules above</li>
-                    </ul>
-                    <p><strong>Example:</strong> To test frictionless success (Y) with v2.2 only and no 3DS Method, you might try: 4000100X11112100 (where X could be any digit)</p>
-                    <p><strong>Important:</strong> Not all combinations may be configured in the sandbox. If you get an "Unknown test" error, try using one of the documented examples or contact the sandbox provider.</p>
-                </details>
-                <details>
-                    <summary>Expected Behaviors</summary>
-                    <p>Each test card is designed to test specific scenarios:</p>
-                    <ul>
-                        <li><strong>Frictionless:</strong> Authentication completes without user interaction</li>
-                        <li><strong>Challenge:</strong> User must interact with challenge iframe</li>
-                        <li><strong>3DS Method:</strong> Browser fingerprinting step (optional)</li>
-                        <li><strong>Timeout:</strong> Simulates timeout scenarios for testing error handling</li>
-                    </ul>
-                </details>
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>Authentication Flow</h2>
-            <div class="steps" id="steps">
-                <div class="step" id="step-preauth">
-                    <span class="step-icon">1️⃣</span>
-                    <span>Pre-Authentication Check</span>
+                    </select>
+                    <input type="text" id="customCardNumber" class="form-input text-sm mt-2 hidden" placeholder="Enter 16-digit test card number">
                 </div>
-                <div class="step" id="step-3dsmethod">
-                    <span class="step-icon">2️⃣</span>
-                    <span>3DS Method (if available)</span>
-                </div>
-                <div class="step" id="step-auth">
-                    <span class="step-icon">3️⃣</span>
-                    <span>Authentication Request</span>
-                </div>
-                <div class="step" id="step-challenge">
-                    <span class="step-icon">4️⃣</span>
-                    <span>Challenge Flow</span>
-                </div>
-                <div class="step" id="step-postauth">
-                    <span class="step-icon">5️⃣</span>
-                    <span>Get Final Result</span>
-                </div>
+                <div id="testInfo" class="test-info text-xs"></div>
+                <button id="startAuthBtn" onclick="startAuthentication()" class="btn btn-primary w-full mt-4 text-sm">
+                    <span id="btnText">Start 3DS Authentication</span>
+                    <span id="btnSpinner" class="spinner ml-2 hidden"></span>
+                </button>
             </div>
             
-            <h3>Current Status</h3>
-            <div id="statusMessage" class="api-response">
-                Ready to start authentication...
+            <!-- Authentication Flow Steps -->
+            <div class="flex-1 px-4 py-4 overflow-y-auto custom-scrollbar">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Authentication Flow</h3>
+                <div class="space-y-2" id="steps">
+                    <div class="step" id="step-preauth">
+                        <span class="step-icon">1️⃣</span>
+                        <span class="text-sm">Pre-Authentication Check</span>
+                    </div>
+                    <div class="step" id="step-3dsmethod">
+                        <span class="step-icon">2️⃣</span>
+                        <span class="text-sm">3DS Method (if available)</span>
+                    </div>
+                    <div class="step" id="step-auth">
+                        <span class="step-icon">3️⃣</span>
+                        <span class="text-sm">Authentication Request</span>
+                    </div>
+                    <div class="step" id="step-challenge">
+                        <span class="step-icon">4️⃣</span>
+                        <span class="text-sm">Challenge Flow</span>
+                    </div>
+                    <div class="step" id="step-postauth">
+                        <span class="step-icon">5️⃣</span>
+                        <span class="text-sm">Get Final Result</span>
+                    </div>
+                </div>
+                
+                <!-- Help Section -->
+                <div class="mt-6 space-y-2">
+                    <details class="bg-gray-50 rounded-lg p-3 text-xs">
+                        <summary class="cursor-pointer font-semibold text-gray-700">Test Card Patterns</summary>
+                        <div class="mt-2 space-y-1 text-gray-600">
+                            <p>Last 4 digits determine behavior:</p>
+                            <ul class="list-disc list-inside ml-2">
+                                <li><strong>1st:</strong> Version (0=all, 1=v2.1, 2=v2.2, 3=v2.3)</li>
+                                <li><strong>2nd:</strong> 3DS Method (0=yes, 1=no, 2=timeout)</li>
+                                <li><strong>3rd:</strong> Outcome (0-6=frictionless, 7=challenge)</li>
+                                <li><strong>4th:</strong> Challenge type (0=auto-pass, 1=auto-fail, 2=manual)</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>API Responses</h2>
-            <div id="apiResponses" class="api-response">
-                <em>API responses will appear here...</em>
+        <!-- Column 2: API Responses & Status (960px) -->
+        <div class="flex flex-col h-full overflow-hidden bg-white border-r border-gray-300">
+            <!-- Header -->
+            <div class="px-6 py-3 border-b border-gray-200 bg-gray-50 flex items-center" style="height: 73px;">
+                <h2 class="text-xl font-semibold text-gray-800">API Responses & Status</h2>
+            </div>
+            
+            <!-- Current Status -->
+            <div class="px-6 py-3 border-b border-gray-200">
+                <h3 class="text-sm font-semibold text-gray-700 mb-2">Current Status</h3>
+                <div id="statusMessage" class="api-response max-h-24 overflow-y-auto custom-scrollbar">
+                    Ready to start authentication...
+                </div>
+            </div>
+            
+            <!-- API Responses -->
+            <div class="flex-1 px-6 py-3 overflow-hidden flex flex-col min-h-0">
+                <h3 class="text-sm font-semibold text-gray-700 mb-2 flex-shrink-0">API Transaction Log</h3>
+                <div id="apiResponses" class="api-response flex-1 overflow-y-auto custom-scrollbar min-h-0">
+                    <em>API responses will appear here...</em>
+                </div>
             </div>
         </div>
         
-        <div class="section full-width">
-            <h2>Challenge Frame</h2>
-            <div class="iframe-container">
-                <iframe id="challengeIframe" name="challengeIframe"></iframe>
+        <!-- Column 3: Challenge Frame (640px) -->
+        <div class="flex flex-col h-full overflow-hidden bg-white">
+            <!-- Header -->
+            <div class="px-6 py-3 border-b border-gray-200 bg-gray-50" style="height: 73px;">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800">Challenge Frame</h2>
+                    <p class="text-sm text-gray-600">User interaction area for 3DS challenges</p>
+                </div>
+            </div>
+            
+            <!-- Challenge Frame Container -->
+            <div class="flex-1 px-6 py-3 bg-white overflow-hidden">
+                <div class="h-full rounded-lg overflow-hidden shadow-inner bg-gray-50 relative">
+                    <iframe id="challengeIframe" name="challengeIframe" class="hidden absolute inset-0 w-full h-full"></iframe>
+                    <div id="challengePlaceholder" class="h-full flex items-center justify-center text-gray-400">
+                        <div class="text-center">
+                            <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <p class="text-lg font-medium">Challenge frame will appear here</p>
+                            <p class="text-sm mt-2">Complete the authentication flow to see challenges</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
     <!-- Hidden iframe for 3DS Method -->
-    <iframe id="threeDSMethodIframe" name="threeDSMethodIframe" style="display:none;"></iframe>
+    <iframe id="threeDSMethodIframe" name="threeDSMethodIframe" class="hidden"></iframe>
     
     <!-- Hidden form for 3DS Method submission -->
-    <form id="threeDSMethodForm" style="display:none;">
+    <form id="threeDSMethodForm" class="hidden">
         <input type="hidden" name="threeDSMethodData" id="threeDSMethodData">
     </form>
     
     <!-- Hidden form for Challenge submission -->
-    <form id="challengeForm" style="display:none;">
+    <form id="challengeForm" class="hidden">
         <input type="hidden" name="creq" id="creqData">
     </form>
     
+    <!-- External JavaScript -->
+    <script src="app.js"></script>
+    
+    <!-- Custom script for Tailwind classes updates -->
     <script>
-        // Test PAN Configuration
-        const testPANs = {
-            '9000100111111111': {
-                description: 'Card not enrolled',
-                expectation: 'Should fail at pre-auth with not enrolled response',
-                supportedVersions: ['2.1.0', '2.2.0', '2.3.1'],
-                expectedOutcome: 'not-enrolled',
-                category: 'enrollment'
-            },
-            '5000100411110203': {
-                description: '3DS Method timeout with messageVersion 2.1-2.2',
-                expectation: '3DS Method will timeout, then frictionless success (Y)',
-                supportedVersions: ['2.1.0', '2.2.0'],
-                expectedOutcome: 'frictionless-y',
-                threeDSMethod: 'timeout',
-                category: 'example'
-            },
-            '4000100511112003': {
-                description: 'Frictionless with 3DS Method v2.2',
-                expectation: 'Complete 3DS Method, then frictionless success (Y)',
-                supportedVersions: ['2.2.0'],
-                expectedOutcome: 'frictionless-y',
-                threeDSMethod: 'included',
-                category: 'example'
-            },
-            '6000100611111103': {
-                description: 'Frictionless without 3DS Method v2.1',
-                expectation: 'No 3DS Method, frictionless success (Y)',
-                supportedVersions: ['2.1.0'],
-                expectedOutcome: 'frictionless-y',
-                threeDSMethod: 'none',
-                category: 'example'
-            },
-            '3000100811111072': {
-                description: 'Manual challenge v2.1',
-                expectation: 'Requires manual interaction in challenge iframe',
-                supportedVersions: ['2.1.0'],
-                expectedOutcome: 'challenge-manual',
-                threeDSMethod: 'included',
-                category: 'example'
-            },
-            '7000100911112070': {
-                description: 'Auto-pass challenge v2.2',
-                expectation: 'Challenge will auto-complete with success (Y)',
-                supportedVersions: ['2.2.0'],
-                expectedOutcome: 'challenge-auto-y',
-                threeDSMethod: 'included',
-                category: 'example'
-            },
-            '3000101011111071': {
-                description: 'Auto-fail challenge v2.1',
-                expectation: 'Challenge will auto-complete with failure (N)',
-                supportedVersions: ['2.1.0'],
-                expectedOutcome: 'challenge-auto-n',
-                threeDSMethod: 'included',
-                category: 'example'
-            }
-        };
-        
-        // Global variables
-        let threeDSServerTransID = null;
-        let acsTransID = null;
-        let acsURL = null;
-        let threeDSMethodURL = null;
-        let dsTransID = null;
-        let messageVersion = '2.1.0';
-        let supportedVersions = [];
-        
-        // Utility function to update step status
-        function updateStep(stepId, status) {
-            const step = document.getElementById(stepId);
-            step.classList.remove('active', 'completed', 'error');
-            step.classList.add(status);
-        }
-        
-        // Utility function to update status message
-        function updateStatus(message, isError = false) {
+        // Custom UI handling for Tailwind classes
+        const originalUpdateStatus = window.updateStatus;
+        window.updateStatus = function(message, isError = false) {
             const statusDiv = document.getElementById('statusMessage');
             statusDiv.textContent = message;
             if (isError) {
-                statusDiv.style.background = '#ffebee';
-                statusDiv.style.color = '#c62828';
+                statusDiv.classList.remove('bg-gray-100', 'text-gray-900');
+                statusDiv.classList.add('bg-red-50', 'text-red-900');
             } else {
-                statusDiv.style.background = '#f8f9fa';
-                statusDiv.style.color = '#333';
+                statusDiv.classList.remove('bg-red-50', 'text-red-900');
+                statusDiv.classList.add('bg-gray-100', 'text-gray-900');
             }
-        }
+        };
         
-        // Utility function to add API response
-        function addApiResponse(title, data) {
-            const responseDiv = document.getElementById('apiResponses');
-            const timestamp = new Date().toLocaleTimeString();
-            const content = `[${timestamp}] ${title}\n${JSON.stringify(data, null, 2)}\n\n`;
-            responseDiv.innerHTML = `<pre>${content}</pre>` + responseDiv.innerHTML;
-        }
-        
-        // Base64 URL encoding function
-        function base64url(input) {
-            const base64 = btoa(input);
-            return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-        }
-        
-        // Generate purchase date
-        function generatePurchaseDate() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            return year + month + day + hours + minutes + seconds;
-        }
-        
-        // Parse PAN to determine test behavior
-        function parsePAN(pan) {
-            if (pan.length < 4) return null;
-            
-            const lastFour = pan.slice(-4);
-            const digits = lastFour.split('').map(d => parseInt(d));
-            
-            const config = {
-                messageVersions: [],
-                threeDSMethod: 'none',
-                outcome: 'unknown',
-                challengeType: null
-            };
-            
-            // 1st digit - Message version
-            switch(digits[0]) {
-                case 0: config.messageVersions = ['2.1.0', '2.2.0', '2.3.1']; break;
-                case 1: config.messageVersions = ['2.1.0']; break;
-                case 2: config.messageVersions = ['2.2.0']; break;
-                case 3: config.messageVersions = ['2.3.1']; break;
-            }
-            
-            // 2nd digit - 3DS Method
-            switch(digits[1]) {
-                case 0: config.threeDSMethod = 'included'; break;
-                case 1: config.threeDSMethod = 'none'; break;
-                case 2: config.threeDSMethod = 'timeout'; break;
-            }
-            
-            // 3rd digit - ARes outcome
-            switch(digits[2]) {
-                case 0: config.outcome = 'frictionless-y'; break;
-                case 1: config.outcome = 'frictionless-n'; break;
-                case 2: config.outcome = 'frictionless-a'; break;
-                case 3: config.outcome = 'frictionless-r'; break;
-                case 4: config.outcome = 'frictionless-i'; break;
-                case 5: config.outcome = 'frictionless-u'; break;
-                case 6: config.outcome = 'ds-timeout'; break;
-                case 7: config.outcome = 'challenge'; break;
-            }
-            
-            // 4th digit - Challenge type (if 3rd digit is 7)
-            if (digits[2] === 7) {
-                switch(digits[3]) {
-                    case 0: config.challengeType = 'auto-pass'; break;
-                    case 1: config.challengeType = 'auto-fail'; break;
-                    case 2: config.challengeType = 'manual'; break;
-                }
-            }
-            
-            return config;
-        }
-        
-        // Update test info display
-        function updateTestInfo() {
-            const select = document.getElementById('cardNumber');
+        // Handle custom card input visibility
+        document.getElementById('cardNumber').addEventListener('change', function() {
             const customInput = document.getElementById('customCardNumber');
-            const testInfoDiv = document.getElementById('testInfo');
-            
-            if (select.value === 'custom') {
-                customInput.style.display = 'block';
-                testInfoDiv.innerHTML = '<p>Enter a custom test PAN above. The last 4 digits determine the test behavior.</p>';
-                return;
+            if (this.value === 'custom') {
+                customInput.classList.remove('hidden');
             } else {
-                customInput.style.display = 'none';
+                customInput.classList.add('hidden');
             }
-            
-            const pan = select.value;
-            const testInfo = testPANs[pan];
-            
-            if (testInfo) {
-                testInfoDiv.innerHTML = `
-                    <h4>Test Information</h4>
-                    <p><strong>Description:</strong> ${testInfo.description}</p>
-                    <p class="expectation"><strong>Expected Behavior:</strong> ${testInfo.expectation}</p>
-                    <p class="version"><strong>Supported Versions:</strong> ${testInfo.supportedVersions.join(', ')}</p>
-                `;
-            } else {
-                // Parse PAN for custom configuration
-                const config = parsePAN(pan);
-                if (config) {
-                    let expectation = 'Based on PAN pattern: ';
-                    if (config.outcome === 'challenge' && config.challengeType) {
-                        expectation += `Challenge (${config.challengeType})`;
-                    } else {
-                        expectation += config.outcome.replace('-', ' ');
-                    }
-                    
-                    testInfoDiv.innerHTML = `
-                        <h4>Test Configuration (Auto-detected)</h4>
-                        <p class="expectation"><strong>Expected Behavior:</strong> ${expectation}</p>
-                        <p class="version"><strong>Message Versions:</strong> ${config.messageVersions.join(', ')}</p>
-                        <p><strong>3DS Method:</strong> ${config.threeDSMethod}</p>
-                    `;
-                }
-            }
-        }
+        });
         
-        // Get selected card number
-        function getSelectedCardNumber() {
-            const select = document.getElementById('cardNumber');
-            if (select.value === 'custom') {
-                return document.getElementById('customCardNumber').value;
-            }
-            return select.value;
-        }
+        // Handle challenge iframe visibility
+        const originalPerformChallenge = window.performChallenge;
+        window.performChallenge = async function() {
+            // Hide placeholder, show iframe
+            document.getElementById('challengePlaceholder').classList.add('hidden');
+            document.getElementById('challengeIframe').classList.remove('hidden');
+            
+            // Call original function
+            return originalPerformChallenge.apply(this, arguments);
+        };
         
-        // Main authentication flow
-        async function startAuthentication() {
-            const cardNumber = getSelectedCardNumber();
-            if (!cardNumber || cardNumber === 'custom') {
-                alert('Please enter a card number');
-                return;
-            }
+        // Handle button spinner
+        const originalStartAuth = window.startAuthentication;
+        window.startAuthentication = async function() {
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
             
-            // Reset all steps
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active', 'completed', 'error');
-            });
-            
-            // Reset global variables
-            threeDSServerTransID = null;
-            acsTransID = null;
-            acsURL = null;
-            threeDSMethodURL = null;
-            dsTransID = null;
-            messageVersion = '2.1.0';
-            supportedVersions = [];
-            threeDSMethodCompleted = false;
-            
-            // Clear API responses
-            document.getElementById('apiResponses').innerHTML = '<em>API responses will appear here...</em>';
-            
-            // Disable button during processing
-            document.getElementById('startAuthBtn').disabled = true;
+            // Show spinner
+            btnText.textContent = 'Processing...';
+            btnSpinner.classList.remove('hidden');
             
             try {
-                // Step 1: Pre-Authentication
-                const preauthSuccess = await performPreAuth(cardNumber);
-                
-                // If pre-auth failed (e.g., not enrolled), stop here
-                if (!preauthSuccess) {
-                    console.log('Pre-auth failed, stopping flow');
-                    return;
-                }
-                
-                // Step 2: 3DS Method (if available)
-                if (threeDSMethodURL) {
-                    await perform3DSMethod();
-                } else {
-                    updateStep('step-3dsmethod', 'completed');
-                    updateStatus('No 3DS Method URL provided, skipping...');
-                }
-                
-                // Step 3: Authentication
-                await performAuth(cardNumber);
-                
-                // Step 4: Handle Challenge (if required)
-                if (acsURL) {
-                    await performChallenge();
-                    
-                    // Step 5: Get final result
-                    await performPostAuth();
-                }
-                
-            } catch (error) {
-                console.error('Authentication error:', error);
-                updateStatus(`Error: ${error.message}`, true);
+                await originalStartAuth.apply(this, arguments);
             } finally {
-                document.getElementById('startAuthBtn').disabled = false;
+                // Hide spinner
+                btnText.textContent = 'Start 3DS Authentication';
+                btnSpinner.classList.add('hidden');
             }
-        }
-        
-        // Pre-Authentication
-        async function performPreAuth(cardNumber) {
-            updateStep('step-preauth', 'active');
-            updateStatus('Performing pre-authentication check...');
-            
-            const response = await fetch('/api/3ds/preauth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    acctNumber: cardNumber
-                })
-            });
-            
-            const data = await response.json();
-            addApiResponse('Pre-Authentication Response', data);
-            
-            if (!response.ok) {
-                updateStep('step-preauth', 'error');
-                
-                // Check if it's a not enrolled response
-                if (data.errorCode === '305' || (data.errorDescription && data.errorDescription.includes('not enrolled'))) {
-                    updateStatus('❌ Card not enrolled for 3D Secure', true);
-                    // Mark subsequent steps as not applicable
-                    updateStep('step-3dsmethod', 'error');
-                    updateStep('step-auth', 'error');
-                    updateStep('step-challenge', 'error');
-                    updateStep('step-postauth', 'error');
-                    // Return false to indicate flow should stop
-                    return false;
-                }
-                
-                throw new Error(data.errorDescription || 'Pre-authentication failed');
-            }
-            
-            threeDSServerTransID = data.threeDSServerTransID;
-            threeDSMethodURL = data.threeDSMethodURL;
-            dsTransID = data.dsTransID;
-            
-            // Extract supported versions from pre-auth response
-            supportedVersions = [];
-            if (data.acsProtocolVersions && Array.isArray(data.acsProtocolVersions)) {
-                // Use the versions explicitly supported by the ACS
-                supportedVersions = data.acsProtocolVersions.map(v => v.version);
-                console.log('ACS Protocol Versions:', data.acsProtocolVersions);
-            } else if (data.acsStartProtocolVersion && data.acsEndProtocolVersion) {
-                // Fallback: Determine which versions are supported based on range
-                const startParts = data.acsStartProtocolVersion.split('.').map(n => parseInt(n));
-                const endParts = data.acsEndProtocolVersion.split('.').map(n => parseInt(n));
-                
-                const allVersions = ['2.1.0', '2.2.0', '2.3.1'];
-                supportedVersions = allVersions.filter(v => {
-                    const vParts = v.split('.').map(n => parseInt(n));
-                    // Check if version is within range
-                    const afterStart = vParts[0] > startParts[0] || 
-                                      (vParts[0] === startParts[0] && vParts[1] > startParts[1]) ||
-                                      (vParts[0] === startParts[0] && vParts[1] === startParts[1] && vParts[2] >= startParts[2]);
-                    const beforeEnd = vParts[0] < endParts[0] || 
-                                     (vParts[0] === endParts[0] && vParts[1] < endParts[1]) ||
-                                     (vParts[0] === endParts[0] && vParts[1] === endParts[1] && vParts[2] <= endParts[2]);
-                    return afterStart && beforeEnd;
-                });
-            }
-            
-            // Select appropriate version based on test card and ACS support
-            if (supportedVersions.length > 0) {
-                // Check if this is a test card with specific version requirements
-                const cardNumber = getSelectedCardNumber();
-                const lastFour = cardNumber.slice(-4);
-                const firstDigit = lastFour[0];
-                
-                let requiredVersions = [];
-                switch(firstDigit) {
-                    case '0': requiredVersions = ['2.1.0', '2.2.0', '2.3.1']; break;
-                    case '1': requiredVersions = ['2.1.0']; break;
-                    case '2': requiredVersions = ['2.2.0']; break;
-                    case '3': requiredVersions = ['2.3.1']; break;
-                    default: requiredVersions = supportedVersions;
-                }
-                
-                // Find the highest version that is both required by the test card and supported by ACS
-                const validVersions = supportedVersions.filter(v => requiredVersions.includes(v));
-                
-                if (validVersions.length > 0) {
-                    messageVersion = validVersions[validVersions.length - 1];
-                } else {
-                    // Fallback to highest supported version
-                    messageVersion = supportedVersions[supportedVersions.length - 1];
-                }
-                
-                console.log('ACS supported:', supportedVersions, 'Test requires:', requiredVersions, 'Selected:', messageVersion);
-                updateStatus(`Pre-auth successful. Using version ${messageVersion}. Transaction ID: ${threeDSServerTransID}`);
-            } else {
-                // Default to 2.2.0 if no specific version info
-                messageVersion = '2.2.0';
-                updateStatus(`Pre-auth successful. Using default version ${messageVersion}. Transaction ID: ${threeDSServerTransID}`);
-            }
-            
-            updateStep('step-preauth', 'completed');
-            return true; // Success
-        }
-        
-        // Global variable to track 3DS Method completion
-        let threeDSMethodCompleted = false;
-        
-        // 3DS Method
-        async function perform3DSMethod() {
-            updateStep('step-3dsmethod', 'active');
-            updateStatus('Performing 3DS Method...');
-            threeDSMethodCompleted = false;
-            
-            return new Promise((resolve, reject) => {
-                let timeoutId = null;
-                let resolved = false;
-                
-                // Define the completion handler function
-                const methodComplete = (event) => {
-                    if (event.data === '3DSMethodComplete' && !resolved) {
-                        resolved = true;
-                        window.removeEventListener('message', methodComplete);
-                        if (timeoutId) clearTimeout(timeoutId);
-                        updateStep('step-3dsmethod', 'completed');
-                        updateStatus('3DS Method completed');
-                        threeDSMethodCompleted = true;
-                        resolve();
-                    }
-                };
-                
-                // Set up completion handler
-                window.addEventListener('message', methodComplete);
-                
-                // Create 3DS Method data
-                const methodData = {
-                    threeDSServerTransID: threeDSServerTransID,
-                    threeDSMethodNotificationURL: 'http://echo.localhost/echo/3ds-method-notification'
-                };
-                
-                // Base64 URL encode the data
-                const encodedData = base64url(JSON.stringify(methodData));
-                document.getElementById('threeDSMethodData').value = encodedData;
-                
-                // Submit form to iframe
-                const form = document.getElementById('threeDSMethodForm');
-                form.action = threeDSMethodURL;
-                form.target = 'threeDSMethodIframe';
-                form.method = 'POST';
-                form.submit();
-                
-                // Determine timeout based on test case
-                const cardNumber = getSelectedCardNumber();
-                const lastFour = cardNumber.slice(-4);
-                const is3DSMethodTimeout = lastFour[1] === '2';
-                const timeout = is3DSMethodTimeout ? 10000 : 10000; // Always 10 seconds per spec
-                
-                // Timeout after configured time
-                timeoutId = setTimeout(() => {
-                    if (!resolved) {
-                        resolved = true;
-                        window.removeEventListener('message', methodComplete);
-                        updateStep('step-3dsmethod', 'completed');
-                        updateStatus(`3DS Method timed out (${timeout/1000}s)`);
-                        threeDSMethodCompleted = false; // Mark as not completed
-                        resolve();
-                    }
-                }, timeout);
-            });
-        }
-        
-        // Authentication Request
-        async function performAuth(cardNumber) {
-            // Guard: Don't proceed without a valid transaction ID
-            if (!threeDSServerTransID) {
-                console.error('Cannot perform auth without threeDSServerTransID');
-                return;
-            }
-            
-            updateStep('step-auth', 'active');
-            updateStatus('Sending authentication request...');
-            
-            const authData = {
-                threeDSServerTransID: threeDSServerTransID,
-                acctNumber: cardNumber,
-                cardExpiryDate: "2410",
-                acquirerBIN: "123456",
-                acquirerMerchantID: "merchant123456",
-                mcc: "5411",
-                merchantCountryCode: "840",
-                merchantName: "Test Merchant",
-                messageType: "AReq",
-                messageVersion: messageVersion,
-                messageCategory: "01",
-                deviceChannel: "02",
-                threeDSCompInd: threeDSMethodURL ? (threeDSMethodCompleted ? "Y" : "N") : "U",
-                threeDSRequestorURL: "https://merchant.example.com",
-                threeDSRequestorAuthenticationInd: "01",
-                threeDSRequestorChallengeInd: "03",
-                browserAcceptHeader: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                browserIP: "192.168.1.11",
-                browserJavaEnabled: true,
-                browserJavascriptEnabled: true,
-                browserLanguage: "en-US",
-                browserColorDepth: "24",
-                browserScreenHeight: "1080",
-                browserScreenWidth: "1920",
-                browserTZ: "-300",
-                browserUserAgent: navigator.userAgent,
-                notificationURL: "http://echo.localhost/echo/notification",
-                transType: "01",
-                purchaseAmount: "10000",
-                purchaseCurrency: "840",
-                purchaseExponent: "2",
-                purchaseDate: generatePurchaseDate(),
-                cardholderName: "Test Cardholder",
-                email: "test@example.com",
-                mobilePhone: {
-                    cc: "1",
-                    subscriber: "2125551234"
-                },
-                billAddrCity: "New York",
-                billAddrCountry: "840",
-                billAddrLine1: "123 Main Street",
-                billAddrPostCode: "10001",
-                billAddrState: "NY"
-            };
-            
-            const response = await fetch('/api/3ds/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(authData)
-            });
-            
-            const data = await response.json();
-            addApiResponse('Authentication Response', data);
-            
-            if (!response.ok) {
-                updateStep('step-auth', 'error');
-                
-                // Check for DS timeout
-                if (data.errorCode === '402' || (data.errorDescription && data.errorDescription.includes('timeout'))) {
-                    updateStatus('DS timeout occurred', true);
-                    updateStep('step-challenge', 'error');
-                    updateStep('step-postauth', 'error');
-                    return;
-                }
-                
-                // Check if this is related to not enrolled card
-                if (data.errorCode === '301' && data.errorDescription && data.errorDescription.includes('No transaction found')) {
-                    // This happens when auth is called without a valid pre-auth transaction
-                    // Don't update status as it should already show not enrolled message
-                    return;
-                }
-                
-                // Check for JSON validation errors
-                if (data.errorCode === '203' && data.errorDescription === 'Invalid JSON') {
-                    updateStatus(`❌ Authentication failed: ${data.errorDetail || 'Invalid request format'}`, true);
-                    updateStep('step-challenge', 'error');
-                    updateStep('step-postauth', 'error');
-                    return;
-                }
-                
-                // Check for invalid ThreeDSCompInd error
-                if (data.errorCode === '305' && data.errorDescription === 'Invalid ThreeDSCompInd') {
-                    updateStatus(`❌ Authentication failed: ${data.errorDetail || data.errorDescription}`, true);
-                    updateStep('step-challenge', 'error');
-                    updateStep('step-postauth', 'error');
-                    return;
-                }
-                
-                // Check for unsupported message version error
-                if (data.errorCode === '102' && data.errorDescription === 'Unsupported message version') {
-                    updateStatus(`❌ Authentication failed: ${data.errorDetail || data.errorDescription}`, true);
-                    updateStep('step-challenge', 'error');
-                    updateStep('step-postauth', 'error');
-                    return;
-                }
-                
-                throw new Error(data.errorDescription || 'Authentication failed');
-            }
-            
-            if (data.transStatus === 'C') {
-                // Challenge required
-                acsURL = data.acsURL;
-                acsTransID = data.acsTransID;
-                updateStep('step-auth', 'completed');
-                updateStatus('Authentication requires challenge');
-            } else {
-                // Frictionless flow
-                updateStep('step-auth', 'completed');
-                updateStep('step-challenge', 'completed');
-                updateStep('step-postauth', 'completed');
-                
-                // Update status based on transaction status
-                let statusMessage = '';
-                let isError = false;
-                
-                switch(data.transStatus) {
-                    case 'Y':
-                        statusMessage = '✅ Frictionless authentication successful';
-                        break;
-                    case 'N':
-                        statusMessage = '❌ Frictionless authentication failed';
-                        isError = true;
-                        break;
-                    case 'A':
-                        statusMessage = '⚠️ Authentication attempted';
-                        break;
-                    case 'R':
-                        statusMessage = '🚫 Authentication rejected';
-                        isError = true;
-                        break;
-                    case 'I':
-                        statusMessage = 'ℹ️ Information only (v2.2+)';
-                        break;
-                    case 'U':
-                        statusMessage = '❓ Unable to authenticate';
-                        break;
-                    default:
-                        statusMessage = `Authentication completed with status: ${data.transStatus}`;
-                }
-                
-                updateStatus(statusMessage, isError);
-            }
-        }
-        
-        // Challenge Flow
-        async function performChallenge() {
-            updateStep('step-challenge', 'active');
-            updateStatus('Starting challenge flow...');
-            
-            // Show the challenge iframe
-            document.getElementById('challengeIframe').style.display = 'block';
-            
-            // Create CReq data
-            const creqData = {
-                threeDSServerTransID: threeDSServerTransID,
-                acsTransID: acsTransID,
-                messageVersion: messageVersion,
-                messageType: "CReq",
-                challengeWindowSize: "05"
-            };
-            
-            // Base64 URL encode the CReq
-            const encodedCreq = base64url(JSON.stringify(creqData));
-            document.getElementById('creqData').value = encodedCreq;
-            
-            // Submit challenge form to iframe
-            const form = document.getElementById('challengeForm');
-            form.action = acsURL;
-            form.target = 'challengeIframe';
-            form.method = 'POST';
-            form.submit();
-            
-            updateStatus('Challenge submitted. Please complete the challenge in the iframe below.');
-            
-            // For manual challenge (card ending in 72), user must interact
-            // We'll need to wait for completion
-            return new Promise((resolve) => {
-                // Check periodically for completion
-                const checkInterval = setInterval(async () => {
-                    try {
-                        const response = await fetch('/api/3ds/postauth', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                threeDSServerTransID: threeDSServerTransID
-                            })
-                        });
-                        
-                        const data = await response.json();
-                        
-                        if (data.messageType === 'RReq') {
-                            // Challenge completed
-                            clearInterval(checkInterval);
-                            updateStep('step-challenge', 'completed');
-                            updateStatus('Challenge completed successfully');
-                            resolve();
-                        }
-                    } catch (error) {
-                        // Still waiting for completion
-                    }
-                }, 2000); // Check every 2 seconds
-                
-                // Timeout after 5 minutes
-                setTimeout(() => {
-                    clearInterval(checkInterval);
-                    updateStep('step-challenge', 'error');
-                    updateStatus('Challenge timed out', true);
-                    resolve();
-                }, 300000);
-            });
-        }
-        
-        // Post-Authentication
-        async function performPostAuth() {
-            updateStep('step-postauth', 'active');
-            updateStatus('Retrieving final authentication result...');
-            
-            const response = await fetch('/api/3ds/postauth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    threeDSServerTransID: threeDSServerTransID
-                })
-            });
-            
-            const data = await response.json();
-            addApiResponse('Post-Authentication Response', data);
-            
-            if (!response.ok) {
-                throw new Error(data.errorDescription || 'Post-authentication failed');
-            }
-            
-            updateStep('step-postauth', 'completed');
-            
-            // Display final result
-            if (data.transStatus === 'Y') {
-                updateStatus(`✅ Authentication successful! ECI: ${data.eci}, Auth Value: ${data.authenticationValue}`);
-            } else if (data.transStatus === 'N') {
-                updateStatus(`❌ Authentication failed. Status: ${data.transStatus}`, true);
-            } else {
-                updateStatus(`⚠️ Authentication completed with status: ${data.transStatus}`);
-            }
-        }
-        
-        // Initialize on page load
-        window.addEventListener('load', () => {
-            updateStatus('Ready to start authentication...');
-            updateTestInfo();
-        });
+        };
     </script>
 </body>
 </html>
