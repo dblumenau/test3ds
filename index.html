@@ -5,21 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Secure v2 Browser Demo</title>
     <link href="dist/styles.css" rel="stylesheet">
+    <!-- Highlight.js for JSON syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
 </head>
-<body class="h-screen overflow-hidden">
+<body class="h-screen overflow-hidden bg-gray-900">
     <!-- Main Container - Flexible height -->
-    <div class="w-[1920px] h-screen mx-auto grid grid-cols-asymmetric bg-gray-50">
-        <!-- Column 1: Card Selection & Authentication Flow (320px) -->
-        <div class="flex flex-col h-full overflow-hidden border-r border-gray-300 bg-white">
-            <!-- Header -->
-            <div class="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-3ds-primary to-blue-600">
-                <h1 class="text-xl font-bold text-white">3DS v2 Demo</h1>
-                <p class="text-sm text-blue-100">1920×1080 Optimized</p>
+    <div class="w-[1920px] h-screen mx-auto flex flex-col bg-gray-900">
+        <!-- Headers Row -->
+        <div class="grid grid-cols-asymmetric bg-gray-700 border-b border-gray-600" style="height: 73px;">
+            <!-- Column 1 Header -->
+            <div class="px-4 py-3 border-r border-gray-600 flex items-center">
+                <img src="3ds_logo.png" alt="TEST3DS Logo" class="h-10 w-10 mr-3">
+                <h1 class="text-xl font-bold text-white">TEST3DS</h1>
             </div>
+            <!-- Column 2 Header -->
+            <div class="px-6 py-3 border-r border-gray-600 flex items-center">
+                <h2 class="text-xl font-semibold text-gray-100">API Responses & Status</h2>
+            </div>
+            <!-- Column 3 Header -->
+            <div class="px-6 py-3 flex items-center">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-100">Challenge Frame</h2>
+                    <p class="text-sm text-gray-400">User interaction area for 3DS challenges</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Area -->
+        <div class="flex-1 grid grid-cols-asymmetric overflow-hidden">
+            <!-- Column 1: Card Selection & Authentication Flow (320px) -->
+            <div class="flex flex-col h-full overflow-hidden border-r border-gray-700 bg-gray-800">
             
             <!-- Card Selection -->
-            <div class="px-4 py-4 border-b border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-800 mb-3">Test Card Selection</h2>
+            <div class="px-4 py-4 border-b border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-100 mb-3">Test Card Selection</h2>
                 <div class="form-group">
                     <label for="cardNumber" class="form-label text-sm">Select Test Card</label>
                     <select id="cardNumber" onchange="updateTestInfo()" class="form-select text-sm">
@@ -42,7 +63,7 @@
             
             <!-- Authentication Flow Steps -->
             <div class="flex-1 px-4 py-4 overflow-y-auto custom-scrollbar">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">Authentication Flow</h3>
+                <h3 class="text-lg font-semibold text-gray-100 mb-3">Authentication Flow</h3>
                 <div class="space-y-2" id="steps">
                     <div class="step" id="step-preauth">
                         <span class="step-icon">1️⃣</span>
@@ -68,9 +89,9 @@
                 
                 <!-- Help Section -->
                 <div class="mt-6 space-y-2">
-                    <details class="bg-gray-50 rounded-lg p-3 text-xs">
-                        <summary class="cursor-pointer font-semibold text-gray-700">Test Card Patterns</summary>
-                        <div class="mt-2 space-y-1 text-gray-600">
+                    <details class="bg-gray-700 rounded-lg p-3 text-xs">
+                        <summary class="cursor-pointer font-semibold text-gray-300">Test Card Patterns</summary>
+                        <div class="mt-2 space-y-1 text-gray-400">
                             <p>Last 4 digits determine behavior:</p>
                             <ul class="list-disc list-inside ml-2">
                                 <li><strong>1st:</strong> Version (0=all, 1=v2.1, 2=v2.2, 3=v2.3)</li>
@@ -85,15 +106,11 @@
         </div>
         
         <!-- Column 2: API Responses & Status (960px) -->
-        <div class="flex flex-col h-full overflow-hidden bg-white border-r border-gray-300">
-            <!-- Header -->
-            <div class="px-6 py-3 border-b border-gray-200 bg-gray-50 flex items-center" style="height: 73px;">
-                <h2 class="text-xl font-semibold text-gray-800">API Responses & Status</h2>
-            </div>
+        <div class="flex flex-col h-full overflow-hidden bg-gray-800 border-r border-gray-700">
             
             <!-- Current Status -->
-            <div class="px-6 py-3 border-b border-gray-200">
-                <h3 class="text-sm font-semibold text-gray-700 mb-2">Current Status</h3>
+            <div class="px-6 py-3 border-b border-gray-700">
+                <h3 class="text-sm font-semibold text-gray-300 mb-2">Current Status</h3>
                 <div id="statusMessage" class="api-response max-h-24 overflow-y-auto custom-scrollbar">
                     Ready to start authentication...
                 </div>
@@ -101,7 +118,7 @@
             
             <!-- API Responses -->
             <div class="flex-1 px-6 py-3 overflow-hidden flex flex-col min-h-0">
-                <h3 class="text-sm font-semibold text-gray-700 mb-2 flex-shrink-0">API Transaction Log</h3>
+                <h3 class="text-sm font-semibold text-gray-300 mb-2 flex-shrink-0">API Transaction Log</h3>
                 <div id="apiResponses" class="api-response flex-1 overflow-y-auto custom-scrollbar min-h-0">
                     <em>API responses will appear here...</em>
                 </div>
@@ -109,30 +126,24 @@
         </div>
         
         <!-- Column 3: Challenge Frame (640px) -->
-        <div class="flex flex-col h-full overflow-hidden bg-white">
-            <!-- Header -->
-            <div class="px-6 py-3 border-b border-gray-200 bg-gray-50" style="height: 73px;">
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-800">Challenge Frame</h2>
-                    <p class="text-sm text-gray-600">User interaction area for 3DS challenges</p>
-                </div>
-            </div>
+        <div class="flex flex-col h-full overflow-hidden bg-gray-800">
             
             <!-- Challenge Frame Container -->
-            <div class="flex-1 px-6 py-3 bg-white overflow-hidden">
-                <div class="h-full rounded-lg overflow-hidden shadow-inner bg-gray-50 relative">
+            <div class="flex-1 px-6 py-3 bg-gray-800 overflow-hidden">
+                <div class="h-full rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
                     <iframe id="challengeIframe" name="challengeIframe" class="hidden absolute inset-0 w-full h-full"></iframe>
-                    <div id="challengePlaceholder" class="h-full flex items-center justify-center text-gray-400">
+                    <div id="challengePlaceholder" class="h-full flex items-center justify-center text-gray-500">
                         <div class="text-center">
                             <svg class="w-24 h-24 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
-                            <p class="text-lg font-medium">Challenge frame will appear here</p>
-                            <p class="text-sm mt-2">Complete the authentication flow to see challenges</p>
+                            <p class="text-lg font-medium text-gray-300">Challenge frame will appear here</p>
+                            <p class="text-sm mt-2 text-gray-400">Complete the authentication flow to see challenges</p>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
     
@@ -160,11 +171,11 @@
             const statusDiv = document.getElementById('statusMessage');
             statusDiv.textContent = message;
             if (isError) {
-                statusDiv.classList.remove('bg-gray-100', 'text-gray-900');
-                statusDiv.classList.add('bg-red-50', 'text-red-900');
+                statusDiv.classList.remove('bg-gray-800', 'text-gray-300');
+                statusDiv.classList.add('bg-red-900/30', 'text-red-400');
             } else {
-                statusDiv.classList.remove('bg-red-50', 'text-red-900');
-                statusDiv.classList.add('bg-gray-100', 'text-gray-900');
+                statusDiv.classList.remove('bg-red-900/30', 'text-red-400');
+                statusDiv.classList.add('bg-gray-800', 'text-gray-300');
             }
         };
         
@@ -212,11 +223,11 @@
     <!-- Test Card Reference Modal -->
     <div id="testCardModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <!-- Background backdrop -->
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" onclick="hideTestCardReference()"></div>
+        <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" onclick="hideTestCardReference()"></div>
         
         <!-- Modal panel -->
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all w-full max-w-7xl">
+            <div class="relative transform overflow-hidden rounded-lg bg-gray-800 shadow-xl transition-all w-full max-w-7xl">
                 <!-- Modal header -->
                 <div class="bg-3ds-primary px-6 py-4">
                     <div class="flex items-center justify-between">
@@ -233,14 +244,14 @@
                 </div>
                 
                 <!-- Modal body -->
-                <div class="bg-white px-6 py-4 max-h-[80vh] overflow-y-auto">
+                <div class="bg-gray-800 px-6 py-4 max-h-[80vh] overflow-y-auto">
                     <div id="testCardReferenceContent">
                         <!-- Content will be populated by JavaScript -->
                     </div>
                 </div>
                 
                 <!-- Modal footer -->
-                <div class="bg-gray-50 px-6 py-3 flex justify-end">
+                <div class="bg-gray-700 px-6 py-3 flex justify-end">
                     <button onclick="hideTestCardReference()" class="btn btn-secondary text-sm">
                         Close Reference
                     </button>

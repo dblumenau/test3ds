@@ -8,14 +8,14 @@
   }
   
   body {
-    @apply text-gray-900 bg-gray-50;
+    @apply text-gray-100 bg-gray-900;
   }
 }
 
 @layer components {
   /* Step indicator styles */
   .step {
-    @apply flex items-center p-3 mb-2 bg-white rounded-lg shadow-sm transition-all duration-300;
+    @apply flex items-center p-3 mb-2 bg-gray-700 text-gray-300 rounded-lg shadow-sm transition-all duration-300;
   }
   
   .step.active {
@@ -36,7 +36,7 @@
   
   /* API response styles */
   .api-response {
-    @apply bg-gray-100 border border-gray-300 rounded-lg p-4 font-mono text-sm overflow-x-auto;
+    @apply bg-gray-900 border border-gray-700 rounded-lg p-4 font-mono text-sm overflow-x-auto text-gray-300;
   }
   
   /* Form styles */
@@ -45,17 +45,17 @@
   }
   
   .form-label {
-    @apply block mb-2 font-semibold text-gray-700;
+    @apply block mb-2 font-semibold text-gray-300;
   }
   
   .form-input {
-    @apply w-full px-4 py-2 border-2 border-gray-300 rounded-md text-base 
+    @apply w-full px-4 py-2 border-2 border-gray-600 bg-gray-700 text-gray-100 rounded-md text-base 
            focus:outline-none focus:border-3ds-primary focus:ring-2 focus:ring-3ds-primary/20
            transition-colors duration-200;
   }
   
   .form-select {
-    @apply w-full px-4 py-2 border-2 border-gray-300 rounded-md text-base bg-white
+    @apply w-full px-4 py-2 border-2 border-gray-600 rounded-md text-base bg-gray-700 text-gray-100
            focus:outline-none focus:border-3ds-primary focus:ring-2 focus:ring-3ds-primary/20
            transition-colors duration-200;
   }
@@ -78,11 +78,11 @@
   
   /* Card styles */
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200;
+    @apply bg-gray-800 rounded-lg shadow-sm border border-gray-700;
   }
   
   .card-header {
-    @apply px-6 py-4 border-b border-gray-200;
+    @apply px-6 py-4 border-b border-gray-700;
   }
   
   .card-body {
@@ -112,19 +112,19 @@
   
   /* Test info styles */
   .test-info {
-    @apply bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4 text-sm;
+    @apply bg-blue-900/30 border border-blue-700 rounded-lg p-4 mt-4 text-sm text-gray-300;
   }
   
   .test-info h4 {
-    @apply text-lg font-semibold text-gray-800 mb-2;
+    @apply text-lg font-semibold text-gray-100 mb-2;
   }
   
   .test-info .expectation {
-    @apply text-green-700 font-semibold;
+    @apply text-green-400 font-semibold;
   }
   
   .test-info .version {
-    @apply text-blue-700;
+    @apply text-blue-400;
   }
   
   /* Challenge iframe styles */
@@ -153,11 +153,11 @@
   }
   
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-gray-200 rounded;
+    @apply bg-gray-700 rounded;
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-gray-400 rounded hover:bg-gray-500;
+    @apply bg-gray-600 rounded hover:bg-gray-500;
   }
   
   /* Fixed height for FHD display */
@@ -168,15 +168,15 @@
 }
 
 .reference-table th {
-  @apply bg-gray-100 px-3 py-2 text-left font-semibold text-gray-700 sticky top-0;
+  @apply bg-gray-700 px-3 py-2 text-left font-semibold text-gray-200 sticky top-0;
 }
 
 .reference-table td {
-  @apply px-3 py-2 border-b border-gray-200;
+  @apply px-3 py-2 border-b border-gray-700 text-gray-300;
 }
 
 .reference-table tr:hover td {
-  @apply bg-gray-50;
+  @apply bg-gray-700;
 }
 
 .pattern-digit {

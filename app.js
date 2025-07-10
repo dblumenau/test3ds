@@ -363,12 +363,12 @@ function updateStatus(message, isError = false) {
     statusDiv.textContent = message;
     
     // Remove any existing color classes
-    statusDiv.classList.remove('bg-gray-100', 'text-gray-900', 'bg-red-50', 'text-red-900');
+    statusDiv.classList.remove('bg-gray-100', 'text-gray-900', 'bg-red-50', 'text-red-900', 'bg-gray-800', 'text-gray-300', 'bg-red-900/30', 'text-red-400');
     
     if (isError) {
-        statusDiv.classList.add('bg-red-50', 'text-red-900');
+        statusDiv.classList.add('bg-red-900/30', 'text-red-400');
     } else {
-        statusDiv.classList.add('bg-gray-100', 'text-gray-900');
+        statusDiv.classList.add('bg-gray-800', 'text-gray-300');
     }
 }
 
@@ -376,15 +376,40 @@ function updateStatus(message, isError = false) {
 function addApiResponse(title, data) {
     const responseDiv = document.getElementById('apiResponses');
     const timestamp = new Date().toLocaleTimeString();
-    const content = `[${timestamp}] ${title}\n${JSON.stringify(data, null, 2)}\n\n`;
+    
+    // Format the JSON with proper indentation
+    const jsonString = JSON.stringify(data, null, 2);
+    
+    // Create a container for the timestamp and title
+    const entryContainer = document.createElement('div');
+    entryContainer.className = 'mb-4';
+    
+    // Add timestamp and title
+    const header = document.createElement('div');
+    header.className = 'text-sm text-gray-400 mb-1';
+    header.textContent = `[${timestamp}] ${title}`;
+    entryContainer.appendChild(header);
+    
+    // Create pre/code elements for syntax highlighting
+    const pre = document.createElement('pre');
+    const code = document.createElement('code');
+    code.className = 'language-json';
+    code.textContent = jsonString;
+    pre.appendChild(code);
+    
+    // Apply syntax highlighting
+    hljs.highlightElement(code);
+    
+    // Add the highlighted code to the container
+    entryContainer.appendChild(pre);
     
     // Check if this is the first response
     if (responseDiv.innerHTML.includes('<em>API responses will appear here...</em>')) {
-        responseDiv.innerHTML = `<pre>${content}</pre>`;
-    } else {
-        // Append to the bottom instead of prepending
-        responseDiv.innerHTML = responseDiv.innerHTML + `<pre>${content}</pre>`;
+        responseDiv.innerHTML = '';
     }
+    
+    // Append the new entry
+    responseDiv.appendChild(entryContainer);
     
     // Auto-scroll to the bottom to show the latest message
     responseDiv.scrollTop = responseDiv.scrollHeight;
