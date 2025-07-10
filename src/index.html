@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Secure v2 Browser Demo</title>
-    <link href="dist/styles.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
     <!-- Highlight.js for JSON syntax highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
@@ -17,7 +17,7 @@
         <div class="grid grid-cols-asymmetric bg-gray-700 border-b border-gray-600" style="height: 73px;">
             <!-- Column 1 Header -->
             <div class="px-4 py-2 border-r border-gray-600 flex items-center justify-center">
-                <img src="3ds_logo.png" alt="TEST3DS Logo" class="h-14 w-14 mr-3">
+                <img src="/images/3ds_logo.png" alt="TEST3DS Logo" class="h-14 w-14 mr-3">
                 <h1 class="text-xl font-bold text-white">TEST3DS</h1>
             </div>
             <!-- Column 2 Header -->
@@ -164,8 +164,8 @@
         <input type="hidden" name="creq" id="creqData">
     </form>
     
-    <!-- External JavaScript -->
-    <script src="app.js"></script>
+    <!-- External JavaScript - Using ES modules -->
+    <script type="module" src="/js/app.js"></script>
     
     <!-- Custom script for Tailwind classes updates -->
     <script>

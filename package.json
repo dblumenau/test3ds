@@ -2,27 +2,32 @@
   "name": "3ds-browser-demo",
   "version": "1.0.0",
   "description": "3D Secure v2.2.0 Browser Demo with iframe integration",
-  "main": "proxy-server.js",
+  "main": "server/proxy-server.js",
+  "type": "module",
   "scripts": {
-    "start": "node proxy-server.js",
-    "dev": "nodemon proxy-server.js",
-    "build": "postcss styles.css -o dist/styles.css",
-    "watch-css": "postcss styles.css -o dist/styles.css --watch",
-    "watch": "concurrently \"npm:watch-css\" \"BROWSERSYNC=true npm:dev\" \"npm:browser-sync\" --names \"CSS,SERVER,BROWSER\" --prefix-colors \"blue,green,magenta\"",
-    "browser-sync": "browser-sync start --proxy localhost:3002 --files \"*.html,*.js,dist/**/*.css\" --no-notify --no-open"
+    "dev": "concurrently \"npm:dev:vite\" \"npm:dev:server\" --names \"VITE,SERVER\" --prefix-colors \"blue,green\"",
+    "dev:vite": "vite",
+    "dev:server": "nodemon server/proxy-server.js",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server/proxy-server.js",
+    "server": "node server/proxy-server.js"
   },
   "dependencies": {
     "axios": "^1.6.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
     "express": "^4.18.2"
   },
   "devDependencies": {
+    "@vitejs/plugin-legacy": "^7.0.0",
     "autoprefixer": "^10.4.20",
     "browser-sync": "^3.0.4",
     "concurrently": "^9.2.0",
     "nodemon": "^3.0.1",
     "postcss": "^8.4.47",
     "postcss-cli": "^11.0.0",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "vite": "^7.0.4"
   }
 }

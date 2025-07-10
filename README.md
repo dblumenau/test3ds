@@ -21,48 +21,77 @@ A comprehensive browser-based demonstration of 3D Secure v2 authentication flows
 npm install
 ```
 
-2. Build the CSS:
+2. Create environment configuration:
+```bash
+cp .env.example .env
+```
+
+3. Edit `.env` and add your API key:
+```
+API_KEY=your-api-key-here
+API_BASE_URL=https://service.sandbox.3dsecure.io
+PORT=3002
+```
+
+4. Build the application:
 ```bash
 npm run build
 ```
 
-3. Start the proxy server:
+5. Start the proxy server:
 ```bash
 npm start
 ```
 
-4. Open http://localhost:3002 in your browser
+6. Open http://localhost:3002 in your browser
 
 ### Development
 
 The recommended way to run the project during development:
 ```bash
-npm run watch
+npm run dev
 ```
 
 This will:
-- Build and watch CSS for changes
-- Auto-restart the server when files change
-- Sync browser updates automatically
+- Start Vite development server on http://localhost:3000 with hot module replacement
+- Start the proxy server on http://localhost:3002 with auto-restart
+- Proxy API calls from Vite to the backend server
 
-Alternatively, you can run just the server with auto-restart:
+Alternatively, you can run just the proxy server:
 ```bash
-npm run dev
+npm run server
 ```
 
 ## How it Works
 
-1. **Proxy Server** (`proxy-server.js`):
+1. **Proxy Server** (`server/proxy-server.js`):
    - Runs on port 3002 (or PORT env variable)
    - Handles CORS by proxying API calls to the 3DS sandbox
-   - Serves the HTML demo page
+   - Serves the built application from dist/ directory
    - Logs all requests and responses
+   - Reads API key from environment variables
 
-2. **HTML Demo** (`index.html`):
+2. **HTML Demo** (`src/index.html`):
    - Shows step-by-step authentication flow
    - Handles 3DS Method in hidden iframe
    - Displays challenge in visible iframe
    - Shows all API responses
+
+3. **JavaScript Modules** (`src/js/modules/`):
+   - `constants.js`: Test PAN configuration for all versions (178 lines)
+   - `test-pans-v2.js`: Version-specific test PANs (160 lines)
+   - `state.js`: Global state management (47 lines)
+   - `utils.js`: Utility functions (147 lines)
+   - `ui.js`: UI-related functions (176 lines)
+   - `ui-reference.js`: Test card reference modal (185 lines)
+   - `auth-flow.js`: Main authentication flow (178 lines)
+   - `auth-flow-handlers.js`: Authentication handlers (161 lines)
+   - `auth-3ds-method.js`: 3DS Method handling (65 lines)
+   - `auth-challenge.js`: Challenge and post-auth handling (112 lines)
+
+4. **Main Application** (`src/js/app.js`):
+   - Entry point that imports and initializes modules
+   - Exposes functions to global scope for HTML event handlers
 
 ## Test Cards
 
@@ -166,13 +195,69 @@ The application features a 3-column layout optimized for 1920×1080 displays:
 ## Technologies Used
 
 - **Backend**: Node.js with Express for the proxy server
-- **Frontend**: Vanilla JavaScript with Tailwind CSS
-- **Build System**: PostCSS for CSS processing
+- **Frontend**: Vanilla JavaScript ES6 modules with Tailwind CSS
+- **Build System**: Vite for development and production builds
+- **CSS Processing**: PostCSS with Tailwind CSS
 - **Styling**: Dark theme with custom color scheme
+
+## Environment Variables
+
+The application uses the following environment variables:
+
+- `API_KEY` (required): Your 3DS API key for the sandbox environment
+- `API_BASE_URL` (optional): The 3DS API base URL (defaults to `https://service.sandbox.3dsecure.io`)
+- `PORT` (optional): Server port (defaults to 3002)
+
+## Project Structure
+
+```
+test3ds/
+├── .env                    # Environment variables (create from .env.example)
+├── .env.example           # Environment template
+├── vite.config.js         # Vite configuration
+├── tailwind.config.js     # Tailwind configuration
+├── postcss.config.js      # PostCSS configuration
+├── package.json           # Dependencies and scripts
+├── server/
+│   └── proxy-server.js    # Express proxy server
+├── src/                   # Source files
+│   ├── index.html         # Main application UI
+│   ├── css/
+│   │   └── styles.css     # Tailwind CSS source
+│   └── js/
+│       ├── app.js         # Main entry point
+│       └── modules/       # JavaScript modules
+│           ├── constants.js        # Test PAN configuration
+│           ├── test-pans-v2.js     # Version-specific PANs
+│           ├── state.js            # State management
+│           ├── utils.js            # Utility functions
+│           ├── ui.js               # UI functions
+│           ├── ui-reference.js     # Test card reference
+│           ├── auth-flow.js        # Authentication flow
+│           ├── auth-flow-handlers.js  # Auth handlers
+│           ├── auth-3ds-method.js     # 3DS Method
+│           └── auth-challenge.js      # Challenge flow
+├── public/                # Static assets
+│   ├── site.webmanifest   # PWA manifest
+│   └── images/
+│       ├── 3ds_logo.png
+│       ├── landscape_logo.png
+│       └── icons/
+│           ├── favicon.ico
+│           ├── favicon-16x16.png
+│           ├── favicon-32x32.png
+│           ├── apple-touch-icon.png
+│           ├── android-chrome-192x192.png
+│           └── android-chrome-512x512.png
+└── dist/                  # Built files (generated)
+```
 
 ## Notes
 
-- The sandbox API key is hardcoded for demo purposes
+- API key must be configured in environment variables (.env file)
+- Vite is used for modern development experience with HMR
 - Only specific test PANs are configured in the sandbox
 - The documented examples (marked with ✓) are guaranteed to work
 - Custom PANs must follow the pattern rules to be valid
+- JavaScript code is modularized with each file under 200 lines
+- Built files are generated in the dist/ directory by Vite

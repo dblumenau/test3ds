@@ -1,17 +1,38 @@
-const express = require('express');
-const cors = require('cors');
-const axios = require('axios');
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import axios from 'axios';
+
+// Get __dirname equivalent in ES6 modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load environment variables
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3002;
-const API_KEY = '935d4c3e-1396-443e-b234-389d55ec1b7f';
-const API_BASE_URL = 'https://service.sandbox.3dsecure.io';
+const API_KEY = process.env.API_KEY;
+const API_BASE_URL = process.env.API_BASE_URL || 'https://service.sandbox.3dsecure.io';
+
+// Validate required environment variables
+if (!API_KEY) {
+  console.error('ERROR: API_KEY environment variable is required');
+  console.error('Please create a .env file with your API key (see .env.example)');
+  process.exit(1);
+}
 
 // Enable CORS for all origins
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+
+// Serve static files from the dist directory (for production)
+app.use(express.static(path.join(__dirname, '..', 'dist')));
+
+// Also serve public files
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Log all requests
 app.use((req, res, next) => {
@@ -45,9 +66,9 @@ app.post('/api/3ds/:endpoint', async (req, res) => {
   }
 });
 
-// Serve the demo HTML page
+// Serve the demo HTML page (for production)
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
