@@ -375,7 +375,8 @@ function updateStatus(message, isError = false) {
 // Utility function to add API response
 function addApiResponse(title, data) {
     const responseDiv = document.getElementById('apiResponses');
-    const timestamp = new Date().toLocaleTimeString();
+    const now = new Date();
+    const timestamp = now.toLocaleTimeString('en-US', { hour12: false }) + '.' + now.getMilliseconds().toString().padStart(3, '0');
     
     // Format the JSON with proper indentation
     const jsonString = JSON.stringify(data, null, 2);
