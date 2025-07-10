@@ -73,9 +73,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`3DS Demo Proxy Server running at http://localhost:${PORT}`);
-  if (process.env.BROWSERSYNC === 'true') {
-    console.log(`Open http://localhost:3000 in your browser for live-reload demo (via BrowserSync)`);
-  } else {
-    console.log(`Open http://localhost:${PORT} in your browser to see the demo`);
-  }
 });
