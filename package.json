@@ -5,14 +5,24 @@
   "main": "proxy-server.js",
   "scripts": {
     "start": "node proxy-server.js",
-    "dev": "nodemon proxy-server.js"
+    "dev": "nodemon proxy-server.js",
+    "build-css": "postcss styles.css -o dist/styles.css",
+    "watch-css": "postcss styles.css -o dist/styles.css --watch",
+    "watch": "concurrently \"npm:watch-css\" \"npm:dev\" \"npm:browser-sync\" --names \"CSS,SERVER,BROWSER\" --prefix-colors \"blue,green,magenta\"",
+    "browser-sync": "browser-sync start --proxy localhost:3002 --files \"*.html,*.js,dist/**/*.css\" --no-notify --no-open"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "axios": "^1.6.0",
     "cors": "^2.8.5",
-    "axios": "^1.6.0"
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "autoprefixer": "^10.4.20",
+    "browser-sync": "^3.0.4",
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.0.1",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.1"
   }
 }

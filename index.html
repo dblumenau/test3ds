@@ -23,53 +23,7 @@
                 <div class="form-group">
                     <label for="cardNumber" class="form-label text-sm">Select Test Card</label>
                     <select id="cardNumber" onchange="updateTestInfo()" class="form-select text-sm">
-                    <optgroup label="Enrollment Tests">
-                        <option value="9000100111111111">9000100111111111 - Card not enrolled</option>
-                    </optgroup>
-                    <optgroup label="Frictionless Success (Y) - All Versions">
-                        <option value="4000100111110003">4000100111110003 - With 3DS Method</option>
-                        <option value="4000100211111103">4000100211111103 - Without 3DS Method</option>
-                        <option value="4000100311112203">4000100311112203 - 3DS Method timeout</option>
-                    </optgroup>
-                    <optgroup label="Frictionless Success (Y) - Version Specific">
-                        <option value="4000100411111003">4000100411111003 - v2.1 only, with 3DS Method</option>
-                        <option value="4000100511112003">4000100511112003 - v2.2 only, with 3DS Method ✓</option>
-                        <option value="4000100611113003">4000100611113003 - v2.3 only, with 3DS Method</option>
-                        <option value="6000100611111103">6000100611111103 - v2.1 only, no 3DS Method ✓</option>
-                    </optgroup>
-                    <optgroup label="Frictionless Failure (N)">
-                        <option value="4000100711110013">4000100711110013 - All versions, with 3DS Method</option>
-                        <option value="4000100811111113">4000100811111113 - v2.1 only, without 3DS Method</option>
-                        <option value="4000100911112213">4000100911112213 - v2.2 only, 3DS Method timeout</option>
-                    </optgroup>
-                    <optgroup label="Frictionless Other Outcomes">
-                        <option value="4000101011110023">4000101011110023 - Attempted (A)</option>
-                        <option value="4000101111110033">4000101111110033 - Rejected (R)</option>
-                        <option value="4000101211112043">4000101211112043 - Information only (I) v2.2+</option>
-                        <option value="4000101311110053">4000101311110053 - Unable to authenticate (U)</option>
-                        <option value="4000101411110063">4000101411110063 - DS timeout</option>
-                    </optgroup>
-                    <optgroup label="Challenge - Auto Pass (Y)">
-                        <option value="4000101511110070">4000101511110070 - All versions, with 3DS Method</option>
-                        <option value="4000101611111170">4000101611111170 - v2.1 only, without 3DS Method</option>
-                        <option value="7000100911112070">7000100911112070 - v2.2 only, with 3DS Method ✓</option>
-                    </optgroup>
-                    <optgroup label="Challenge - Auto Fail (N)">
-                        <option value="4000101711110071">4000101711110071 - All versions, with 3DS Method</option>
-                        <option value="3000101011111071">3000101011111071 - v2.1 only, with 3DS Method ✓</option>
-                        <option value="4000101811112271">4000101811112271 - v2.2 only, 3DS Method timeout</option>
-                    </optgroup>
-                    <optgroup label="Challenge - Manual Interaction">
-                        <option value="4000101911110072">4000101911110072 - All versions, with 3DS Method</option>
-                        <option value="3000100811111072" selected>3000100811111072 - v2.1 only, with 3DS Method ✓</option>
-                        <option value="4000102011112072">4000102011112072 - v2.2 only, with 3DS Method</option>
-                    </optgroup>
-                    <optgroup label="Special Documented Examples">
-                        <option value="5000100411110203">5000100411110203 - 3DS Method timeout v2.1-2.2 ✓</option>
-                    </optgroup>
-                    <optgroup label="Custom Test Configuration">
-                        <option value="custom">Enter custom PAN...</option>
-                    </optgroup>
+                        <!-- Options will be populated dynamically by JavaScript -->
                     </select>
                     <input type="text" id="customCardNumber" class="form-input text-sm mt-2 hidden" placeholder="Enter 16-digit test card number">
                 </div>
@@ -77,6 +31,12 @@
                 <button id="startAuthBtn" onclick="startAuthentication()" class="btn btn-primary w-full mt-4 text-sm">
                     <span id="btnText">Start 3DS Authentication</span>
                     <span id="btnSpinner" class="spinner ml-2 hidden"></span>
+                </button>
+                <button id="resetBtn" onclick="resetDemo()" class="btn btn-secondary w-full mt-2 text-sm">
+                    Reset Demo
+                </button>
+                <button id="referenceBtn" onclick="showTestCardReference()" class="btn btn-secondary w-full mt-2 text-sm">
+                    📋 Test Card Reference
                 </button>
             </div>
             
@@ -248,5 +208,45 @@
             }
         };
     </script>
+    
+    <!-- Test Card Reference Modal -->
+    <div id="testCardModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <!-- Background backdrop -->
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" onclick="hideTestCardReference()"></div>
+        
+        <!-- Modal panel -->
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-lg bg-white shadow-xl transition-all w-full max-w-7xl">
+                <!-- Modal header -->
+                <div class="bg-3ds-primary px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-2xl font-bold text-white" id="modal-title">
+                            🎯 3D Secure Test Card Reference Guide
+                        </h3>
+                        <button onclick="hideTestCardReference()" class="text-white hover:text-gray-300 transition-colors">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mt-2 text-blue-100">Understand test card patterns at a glance - Last 4 digits determine the behavior</p>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="bg-white px-6 py-4 max-h-[80vh] overflow-y-auto">
+                    <div id="testCardReferenceContent">
+                        <!-- Content will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="bg-gray-50 px-6 py-3 flex justify-end">
+                    <button onclick="hideTestCardReference()" class="btn btn-secondary text-sm">
+                        Close Reference
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
