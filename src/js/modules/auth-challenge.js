@@ -48,6 +48,25 @@ export async function performChallenge() {
                     })
                 });
                 
+                // Handle server errors
+                if (!response.ok) {
+                    if (response.status >= 500) {
+                        // Server error - stop polling
+                        clearInterval(checkInterval);
+                        setState('activeCheckInterval', null);
+                        updateStep('step-challenge', 'error');
+                        updateStatus(`Server error during post-authentication: ${response.status} ${response.statusText}`, true);
+                        addApiResponse('Post-Authentication Error', { 
+                            status: response.status, 
+                            statusText: response.statusText,
+                            message: 'Server error - please check server logs'
+                        });
+                        resolve();
+                        return;
+                    }
+                    // For other errors, we might want to continue polling
+                }
+                
                 const data = await response.json();
                 
                 if (data.messageType === 'RReq') {
