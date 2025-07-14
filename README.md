@@ -13,6 +13,7 @@ A comprehensive browser-based demonstration of 3D Secure v2 authentication flows
 - **Custom PAN Entry**: Test additional card numbers beyond the pre-configured ones
 - **Interactive Test Card Reference**: Modal popup with comprehensive pattern guide and examples
 - **Dark Theme UI**: Professional interface optimized for 1920×1080 displays
+- **Responsive Design**: Basic responsiveness for smaller viewports while maintaining 1920×1080 optimization
 
 ## Setup
 
@@ -191,6 +192,14 @@ The application features a 3-column layout optimized for 1920×1080 displays:
 - **Left Column (320px)**: TEST3DS branding, test card selection, and authentication flow status
 - **Middle Column (960px)**: API responses and current status display
 - **Right Column (640px)**: Challenge iframe for user interaction
+
+### Responsive Behavior
+While optimized for 1920×1080 displays, the application includes basic responsiveness:
+- **1920px+**: Full optimized layout with fixed column widths (320px + 960px + 640px)
+- **1536-1919px**: Slightly reduced column widths (300px + 900px + 600px)
+- **1280-1535px**: Further reduced column widths (280px + 840px + 560px)
+- **Below 1280px**: Columns stack vertically for mobile/tablet access
+- **Inspector Tools**: Horizontal scrolling when viewport narrows (e.g., with DevTools open)
 
 ## Technologies Used
 

@@ -141,6 +141,13 @@
 }
 
 @layer utilities {
+  /* Responsive overflow handling */
+  @media (max-width: 1023px) {
+    .custom-scrollbar {
+      max-height: 300px;
+    }
+  }
+  
   /* Custom scrollbar for API responses */
   .custom-scrollbar {
     scrollbar-width: thin;

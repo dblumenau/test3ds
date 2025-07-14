@@ -10,6 +10,9 @@ export default {
       },
       gridTemplateColumns: {
         'asymmetric': '320px 960px 640px',
+        'asymmetric-lg': '280px 840px 560px',
+        'asymmetric-xl': '300px 900px 600px',
+        'stacked': '1fr',
       },
       height: {
         'screen-1080': '1080px',
