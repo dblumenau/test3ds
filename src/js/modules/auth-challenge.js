@@ -10,6 +10,36 @@ export async function performChallenge() {
     document.getElementById('challengePlaceholder').classList.add('hidden');
     document.getElementById('challengeIframe').classList.remove('hidden');
     
+    // Add postMessage listener to check if ACS sends any messages
+    const messageHandler = (event) => {
+        console.log('🔔 Message received from iframe:', {
+            origin: event.origin,
+            data: event.data,
+            source: event.source
+        });
+        
+        // Check if it's from the ACS domain
+        if (event.origin.includes('3dsecure.io') || event.origin.includes('sandbox')) {
+            console.log('✅ ACS message detected:', event.data);
+            updateStatus(`Received message from ACS: ${JSON.stringify(event.data)}`);
+            
+            // Check for various possible completion indicators
+            if (event.data === 'ChallengeComplete' || 
+                event.data === '3DSChallengeComplete' ||
+                (typeof event.data === 'object' && event.data.messageType === 'CRes') ||
+                (typeof event.data === 'string' && event.data.includes('complete'))) {
+                console.log('🎉 Challenge completion detected via postMessage!');
+                updateStatus('Challenge completed via postMessage!');
+                // Remove listener after completion
+                window.removeEventListener('message', messageHandler);
+            }
+        }
+    };
+    
+    // Add the message listener
+    window.addEventListener('message', messageHandler);
+    console.log('👂 Listening for postMessage events from challenge iframe...');
+    
     // Create CReq data
     const creqData = {
         threeDSServerTransID: getStateValue('threeDSServerTransID'),
@@ -35,8 +65,13 @@ export async function performChallenge() {
     // For manual challenge (card ending in 72), user must interact
     // We'll need to wait for completion
     return new Promise((resolve) => {
+        let pollCount = 0;
+        const maxInitialPolls = 3; // Allow 3 quick polls (6 seconds) before showing special handling
+        
         // Check periodically for completion
         const checkInterval = setInterval(async () => {
+            pollCount++;
+            
             try {
                 const response = await fetch('/api/3ds/postauth', {
                     method: 'POST',
@@ -50,12 +85,30 @@ export async function performChallenge() {
                 
                 // Handle server errors
                 if (!response.ok) {
-                    if (response.status >= 500) {
-                        // Server error - stop polling
+                    // For 500 errors during initial polling, this is expected
+                    // The challenge might not be ready yet
+                    if (response.status === 500 && pollCount <= maxInitialPolls) {
+                        console.log('Challenge not ready yet, continuing to poll...');
+                        return; // Continue polling
+                    }
+                    
+                    if (response.status >= 500 && pollCount > maxInitialPolls) {
+                        // Persistent server error after initial polls - stop polling
                         clearInterval(checkInterval);
                         setState('activeCheckInterval', null);
                         updateStep('step-challenge', 'error');
                         updateStatus(`Server error during post-authentication: ${response.status} ${response.statusText}`, true);
+                        
+                        // Hide iframe and show error in placeholder
+                        document.getElementById('challengeIframe').classList.add('hidden');
+                        document.getElementById('challengePlaceholder').classList.remove('hidden');
+                        document.getElementById('challengePlaceholder').innerHTML = `
+                            <div class="text-center">
+                                <div class="text-6xl mb-4 text-red-400">❌</div>
+                                <div class="text-xl text-red-300">Server Error</div>
+                            </div>
+                        `;
+                        
                         addApiResponse('Post-Authentication Error', { 
                             status: response.status, 
                             statusText: response.statusText,
@@ -69,16 +122,61 @@ export async function performChallenge() {
                 
                 const data = await response.json();
                 
-                if (data.messageType === 'RReq') {
-                    // Challenge completed
+                // Log the error for debugging
+                if (response.status === 500) {
+                    console.log('Post-auth 500 error details:', data);
+                }
+                
+                // Check for "not ready" errors that we should continue polling for
+                if (data.errorCode === '308' || data.errorCode === '309' || 
+                    (data.errorCode === '500' && data.errorDescription && 
+                     (data.errorDescription.includes('not ready') || 
+                      data.errorDescription.includes('Challenge not completed')))) {
+                    // Challenge not completed yet - this is expected
+                    if (pollCount > maxInitialPolls) {
+                        updateStatus('Waiting for challenge completion... Please complete the challenge above.');
+                    }
+                    return; // Continue polling
+                }
+                
+                if (data.messageType === 'RReq' || data.transStatus) {
+                    // Challenge completed - we already have the final result
                     clearInterval(checkInterval);
                     setState('activeCheckInterval', null);
                     updateStep('step-challenge', 'completed');
-                    updateStatus('Challenge completed successfully');
-                    resolve();
+                    
+                    // Clean up postMessage listener
+                    window.removeEventListener('message', messageHandler);
+                    
+                    // Hide the challenge iframe and show placeholder again
+                    document.getElementById('challengeIframe').classList.add('hidden');
+                    document.getElementById('challengeIframe').src = 'about:blank';
+                    document.getElementById('challengePlaceholder').classList.remove('hidden');
+                    document.getElementById('challengePlaceholder').innerHTML = `
+                        <div class="text-center">
+                            <div class="text-6xl mb-4">✅</div>
+                            <div class="text-xl text-gray-300">Challenge Completed</div>
+                        </div>
+                    `;
+                    
+                    // Process the final result here since we already have it
+                    addApiResponse('Post-Authentication Response', data);
+                    updateStep('step-postauth', 'completed');
+                    
+                    // Display final result
+                    if (data.transStatus === 'Y') {
+                        updateStatus(`✅ Authentication successful! ECI: ${data.eci}, Auth Value: ${data.authenticationValue}`);
+                    } else if (data.transStatus === 'N') {
+                        updateStatus(`❌ Authentication failed. Status: ${data.transStatus}`, true);
+                    } else {
+                        updateStatus(`⚠️ Authentication completed with status: ${data.transStatus}`);
+                    }
+                    
+                    resolve(true); // Return true to indicate we already processed the result
                 }
             } catch (error) {
-                // Still waiting for completion
+                // Network or parsing error - continue polling
+                console.log('Poll error (will continue):', error);
             }
         }, 2000); // Check every 2 seconds
         
@@ -90,6 +188,19 @@ export async function performChallenge() {
                 clearInterval(getStateValue('activeCheckInterval'));
                 setState('activeCheckInterval', null);
             }
+            // Clean up postMessage listener on timeout
+            window.removeEventListener('message', messageHandler);
+            
+            // Hide iframe and show timeout message
+            document.getElementById('challengeIframe').classList.add('hidden');
+            document.getElementById('challengePlaceholder').classList.remove('hidden');
+            document.getElementById('challengePlaceholder').innerHTML = `
+                <div class="text-center">
+                    <div class="text-6xl mb-4 text-yellow-400">⏱️</div>
+                    <div class="text-xl text-yellow-300">Challenge Timed Out</div>
+                </div>
+            `;
+            
             updateStep('step-challenge', 'error');
             updateStatus('Challenge timed out', true);
             resolve();

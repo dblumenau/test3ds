@@ -13,6 +13,9 @@ export async function performAuth(cardNumber) {
     updateStep('step-auth', 'active');
     updateStatus('Sending authentication request...');
     
+    // Use echo.localhost for notification URL (webhook.site causes issues with browser redirects)
+    const notificationURL = "http://echo.localhost/echo/notification";
+    
     const authData = {
         threeDSServerTransID: getStateValue('threeDSServerTransID'),
         acctNumber: cardNumber,
@@ -41,7 +44,7 @@ export async function performAuth(cardNumber) {
         browserScreenWidth: "1920",
         browserTZ: "-300",
         browserUserAgent: navigator.userAgent,
-        notificationURL: "http://echo.localhost/echo/notification",
+        notificationURL: notificationURL,
         transType: "01",
         purchaseAmount: "10000",
         purchaseCurrency: "840",
