@@ -58,10 +58,12 @@ export async function startAuthentication() {
         
         // Step 4: Handle Challenge (if required)
         if (getStateValue('acsURL')) {
-            await performChallenge();
+            const alreadyProcessed = await performChallenge();
             
-            // Step 5: Get final result
-            await performPostAuth();
+            // Step 5: Get final result (only if not already processed during challenge)
+            if (!alreadyProcessed) {
+                await performPostAuth();
+            }
         }
         
     } catch (error) {
