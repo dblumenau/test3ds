@@ -142,7 +142,7 @@
 
 @layer utilities {
   /* Responsive overflow handling */
-  @media (max-width: 1023px) {
+  @media (max-width: 1279px) {
     .custom-scrollbar {
       max-height: 300px;
     }
@@ -151,20 +151,37 @@
   /* Custom scrollbar for API responses */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #9ca3af #e5e7eb;
+    scrollbar-color: #4b5563 #1f2937;
   }
   
   .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
   
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-gray-700 rounded;
+    @apply bg-gray-800 rounded-full;
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-gray-600 rounded hover:bg-gray-500;
+    @apply bg-gray-600 rounded-full hover:bg-gray-500 transition-colors duration-200;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    @apply bg-3ds-primary;
+  }
+  
+  /* Firefox scrollbar enhancements */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 #1f2937;
+  }
+  
+  /* Smooth scrolling */
+  .custom-scrollbar {
+    scroll-behavior: smooth;
   }
   
   /* Fixed height for FHD display */

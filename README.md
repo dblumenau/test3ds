@@ -194,12 +194,14 @@ The application features a 3-column layout optimized for 1920×1080 displays:
 - **Right Column (640px)**: Challenge iframe for user interaction
 
 ### Responsive Behavior
-While optimized for 1920×1080 displays, the application includes basic responsiveness:
+While optimized for 1920×1080 displays, the application includes intelligent responsiveness:
 - **1920px+**: Full optimized layout with fixed column widths (320px + 960px + 640px)
-- **1536-1919px**: Slightly reduced column widths (300px + 900px + 600px)
-- **1280-1535px**: Further reduced column widths (280px + 840px + 560px)
-- **Below 1280px**: Columns stack vertically for mobile/tablet access
-- **Inspector Tools**: Horizontal scrolling when viewport narrows (e.g., with DevTools open)
+- **1536-1919px**: Flexible layout where middle column shrinks (320px + flexible + 640px)
+- **1440-1535px**: Narrower side columns with flexible middle (280px + flexible + 560px)
+- **1280-1439px**: Compact layout with smaller columns (260px + flexible + 480px)
+- **Below 1280px**: Columns stack vertically for smaller screens
+- **Mobile/Tablet**: Fully functional with vertical scrolling for all content
+- **Inspector Tools**: Middle column gracefully shrinks when viewport narrows
 
 ## Technologies Used
 

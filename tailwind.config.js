@@ -7,12 +7,15 @@ export default {
     extend: {
       screens: {
         'fhd': { 'raw': '(width: 1920px) and (height: 1080px)' },
+        '1280': '1280px',
+        '1440': '1440px',
+        '1920': '1920px',
       },
       gridTemplateColumns: {
         'asymmetric': '320px 960px 640px',
-        'asymmetric-lg': '280px 840px 560px',
-        'asymmetric-xl': '300px 900px 600px',
-        'stacked': '1fr',
+        'asymmetric-flex': '320px 1fr 640px',
+        'asymmetric-narrow': '280px 1fr 560px',
+        'asymmetric-medium': '260px 1fr 480px',
       },
       height: {
         'screen-1080': '1080px',

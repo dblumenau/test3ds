@@ -20,18 +20,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
 </head>
-<body class="min-h-screen lg:h-screen lg:overflow-x-auto bg-gray-900">
+<body class="min-h-screen 1280:h-screen 1280:overflow-x-auto bg-gray-900">
     <!-- Main Container - Flexible height with responsive wrapper -->
-    <div class="w-full 2xl:min-w-[1920px] min-h-screen lg:h-screen mx-auto flex flex-col bg-gray-900">
+    <div class="w-full 1280:min-w-[1280px] min-h-screen 1280:h-screen mx-auto flex flex-col bg-gray-900">
         <!-- Headers Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-asymmetric-lg xl:grid-cols-asymmetric-xl 2xl:grid-cols-asymmetric bg-gray-700 border-b border-gray-600 lg:h-[73px]">
+        <div class="grid grid-cols-1 1280:grid-cols-asymmetric-medium 1440:grid-cols-asymmetric-narrow xl:grid-cols-asymmetric-flex 1920:grid-cols-asymmetric bg-gray-700 border-b border-gray-600 1280:h-[73px]">
             <!-- Column 1 Header -->
-            <div class="px-4 py-2 lg:border-r border-gray-600 flex items-center justify-center">
+            <div class="px-4 py-2 1280:border-r border-gray-600 flex items-center justify-center">
                 <img src="/images/3ds_logo.png" alt="TEST3DS Logo" class="h-14 w-14 mr-3">
                 <h1 class="text-xl font-bold text-white">TEST3DS</h1>
             </div>
             <!-- Column 2 Header -->
-            <div class="px-6 py-3 lg:border-r border-gray-600 flex items-center border-b lg:border-b-0 border-gray-600">
+            <div class="px-6 py-3 1280:border-r border-gray-600 flex items-center border-b 1280:border-b-0 border-gray-600">
                 <h2 class="text-xl font-semibold text-gray-100">API Responses & Status</h2>
             </div>
             <!-- Column 3 Header -->
@@ -44,9 +44,9 @@
         </div>
         
         <!-- Main Content Area -->
-        <div class="flex-1 grid grid-cols-1 lg:grid-cols-asymmetric-lg xl:grid-cols-asymmetric-xl 2xl:grid-cols-asymmetric overflow-y-auto lg:overflow-visible">
+        <div class="flex-1 grid grid-cols-1 1280:grid-cols-asymmetric-medium 1440:grid-cols-asymmetric-narrow xl:grid-cols-asymmetric-flex 1920:grid-cols-asymmetric overflow-y-auto 1280:overflow-visible">
             <!-- Column 1: Card Selection & Authentication Flow (320px) -->
-            <div class="flex flex-col min-h-[400px] lg:h-full overflow-hidden lg:border-r border-gray-700 bg-gray-800 border-b lg:border-b-0">
+            <div class="flex flex-col min-h-[400px] 1280:h-full overflow-hidden 1280:border-r border-gray-700 bg-gray-800 border-b 1280:border-b-0">
             
             <!-- Card Selection -->
             <div class="px-4 py-4 border-b border-gray-700">
@@ -120,7 +120,7 @@
         </div>
         
         <!-- Column 2: API Responses & Status (960px) -->
-        <div class="flex flex-col min-h-[300px] lg:h-full overflow-hidden bg-gray-800 lg:border-r border-gray-700 border-b lg:border-b-0">
+        <div class="flex flex-col min-h-[300px] 1280:h-full overflow-hidden bg-gray-800 1280:border-r border-gray-700 border-b 1280:border-b-0">
             
             <!-- Current Status -->
             <div class="px-6 py-3 border-b border-gray-700">
@@ -133,18 +133,18 @@
             <!-- API Responses -->
             <div class="flex-1 px-6 py-3 overflow-hidden flex flex-col min-h-0">
                 <h3 class="text-sm font-semibold text-gray-300 mb-2 flex-shrink-0">API Transaction Log</h3>
-                <div id="apiResponses" class="api-response flex-1 overflow-y-auto custom-scrollbar min-h-0">
+                <div id="apiResponses" class="api-response flex-1 overflow-y-auto custom-scrollbar min-h-0 max-h-[550px]">
                     <em>API responses will appear here...</em>
                 </div>
             </div>
         </div>
         
         <!-- Column 3: Challenge Frame (640px) -->
-        <div class="flex flex-col min-h-[400px] lg:h-full overflow-hidden bg-gray-800">
+        <div class="flex flex-col min-h-[400px] 1280:h-full overflow-hidden bg-gray-800">
             
             <!-- Challenge Frame Container -->
-            <div class="flex-1 px-6 py-3 bg-gray-800 overflow-hidden">
-                <div class="h-full rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
+            <div class="flex-1 px-3 py-2 bg-gray-800 overflow-hidden flex justify-center">
+                <div class="w-full max-w-xl h-[690px] rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
                     <iframe id="challengeIframe" name="challengeIframe" class="hidden absolute inset-0 w-full h-full bg-white"></iframe>
                     <div id="challengePlaceholder" class="h-full flex items-center justify-center text-gray-500">
                         <div class="text-center">
