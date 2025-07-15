@@ -36,6 +36,9 @@ app.use(express.static(path.join(__dirname, '..', 'dist')));
 // Also serve public files
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// In-memory storage for 3DS Method completion status
+const methodCompletionStatus = new Map();
+
 // Log all requests
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
@@ -80,6 +83,53 @@ app.post('/api/3ds/:endpoint', async (req, res) => {
       error.response?.data || { error: error.message }
     );
   }
+});
+
+// Endpoint to check 3DS Method completion status
+app.post('/api/3ds/method-status', (req, res) => {
+  const { threeDSServerTransID } = req.body;
+  
+  if (!threeDSServerTransID) {
+    return res.status(400).json({ error: 'threeDSServerTransID is required' });
+  }
+  
+  const completed = methodCompletionStatus.get(threeDSServerTransID) || false;
+  console.log(`3DS Method status check for ${threeDSServerTransID}: ${completed}`);
+  
+  res.json({ completed });
+});
+
+// Notification endpoint for 3DS Method completion
+app.post('/echo/3ds-method-notification', express.urlencoded({ extended: true }), (req, res) => {
+  console.log('3DS Method notification received:', req.body);
+  
+  // The ACS posts threeDSMethodData as form data
+  const { threeDSMethodData } = req.body;
+  
+  if (threeDSMethodData) {
+    try {
+      // Decode the base64url data
+      const decodedData = JSON.parse(Buffer.from(threeDSMethodData, 'base64url').toString());
+      const { threeDSServerTransID } = decodedData;
+      
+      if (threeDSServerTransID) {
+        // Mark this transaction as completed
+        methodCompletionStatus.set(threeDSServerTransID, true);
+        console.log(`3DS Method completed for transaction: ${threeDSServerTransID}`);
+        
+        // Clean up after 5 minutes to prevent memory leaks
+        setTimeout(() => {
+          methodCompletionStatus.delete(threeDSServerTransID);
+          console.log(`Cleaned up 3DS Method status for: ${threeDSServerTransID}`);
+        }, 300000);
+      }
+    } catch (error) {
+      console.error('Error decoding threeDSMethodData:', error);
+    }
+  }
+  
+  // Always respond with 200 OK to acknowledge receipt
+  res.status(200).send('OK');
 });
 
 // Serve the demo HTML page (for production)

@@ -17,7 +17,7 @@ export async function performChallenge() {
             data: event.data,
             source: event.source
         });
-        
+        console.log('✅ ACS message detected:', event.data);
         // Check if it's from the ACS domain
         if (event.origin.includes('3dsecure.io') || event.origin.includes('sandbox')) {
             console.log('✅ ACS message detected:', event.data);
@@ -127,6 +127,41 @@ export async function performChallenge() {
                     console.log('Post-auth 500 error details:', data);
                 }
                 
+                // Check for server-side timeout first
+                if (data.errorCode === '402' || data.errorCode === '405' ||
+                    (data.errorDescription && 
+                     (data.errorDescription.includes('timeout') || 
+                      data.errorDescription.includes('timed out') ||
+                      data.errorDescription.includes('Challenge timeout'))) ||
+                    (data.errorDetail && 
+                     (data.errorDetail.includes('timeout') || 
+                      data.errorDetail.includes('timed out') ||
+                      data.errorDetail.includes('Connection timeout')))) {
+                    // Server-side timeout detected
+                    clearInterval(checkInterval);
+                    setState('activeCheckInterval', null);
+                    updateStep('step-challenge', 'error');
+                    
+                    // Clean up postMessage listener
+                    window.removeEventListener('message', messageHandler);
+                    
+                    // Hide iframe and show server timeout message
+                    document.getElementById('challengeIframe').classList.add('hidden');
+                    document.getElementById('challengePlaceholder').classList.remove('hidden');
+                    document.getElementById('challengePlaceholder').innerHTML = `
+                        <div class="text-center">
+                            <div class="text-6xl mb-4 text-yellow-400">⏱️</div>
+                            <div class="text-xl text-yellow-300">Server Timeout</div>
+                            <div class="text-sm text-yellow-400 mt-2">Challenge timed out on server</div>
+                        </div>
+                    `;
+                    
+                    updateStatus('Server timeout - challenge timed out on server side', true);
+                    addApiResponse('Challenge Timeout', data);
+                    resolve();
+                    return;
+                }
+                
                 // Check for "not ready" errors that we should continue polling for
                 if (data.errorCode === '308' || data.errorCode === '309' || 
                     (data.errorCode === '500' && data.errorDescription && 
@@ -182,7 +217,7 @@ export async function performChallenge() {
         
         setState('activeCheckInterval', checkInterval);
         
-        // Timeout after 5 minutes
+        // Timeout after 6 minutes (give server time to respond with its own timeout)
         setTimeout(() => {
             if (getStateValue('activeCheckInterval')) {
                 clearInterval(getStateValue('activeCheckInterval'));
@@ -197,14 +232,15 @@ export async function performChallenge() {
             document.getElementById('challengePlaceholder').innerHTML = `
                 <div class="text-center">
                     <div class="text-6xl mb-4 text-yellow-400">⏱️</div>
-                    <div class="text-xl text-yellow-300">Challenge Timed Out</div>
+                    <div class="text-xl text-yellow-300">Frontend Timeout</div>
+                    <div class="text-sm text-yellow-400 mt-2">Server did not respond with timeout</div>
                 </div>
             `;
             
             updateStep('step-challenge', 'error');
-            updateStatus('Challenge timed out', true);
+            updateStatus('Frontend timeout - server did not respond with timeout message', true);
             resolve();
-        }, 300000);
+        }, 360000);
     });
 }
 

@@ -79,6 +79,9 @@
                     <div class="step" id="step-3dsmethod">
                         <span class="step-icon">2️⃣</span>
                         <span class="text-sm">3DS Method (if available)</span>
+                        <div class="ml-8 text-xs text-gray-400 mt-1">
+                            Device fingerprinting for risk assessment
+                        </div>
                     </div>
                     <div class="step" id="step-auth">
                         <span class="step-icon">3️⃣</span>
@@ -143,8 +146,8 @@
         <div class="flex flex-col min-h-[400px] 1280:h-full overflow-hidden bg-gray-800">
             
             <!-- Challenge Frame Container -->
-            <div class="flex-1 px-3 py-2 bg-gray-800 overflow-hidden flex justify-center">
-                <div class="w-full max-w-xl h-[690px] rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
+            <div class="px-3 py-2 bg-gray-800 overflow-hidden flex justify-center border-b border-gray-700">
+                <div class="w-full max-w-xl h-[500px] rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
                     <iframe id="challengeIframe" name="challengeIframe" class="hidden absolute inset-0 w-full h-full bg-white"></iframe>
                     <div id="challengePlaceholder" class="h-full flex items-center justify-center text-gray-500">
                         <div class="text-center">
@@ -157,12 +160,27 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- 3DS Method Frame Container -->
+            <div id="methodContainer" class="px-3 py-2 bg-gray-800 overflow-hidden flex justify-center">
+                <div class="w-full max-w-xl h-[150px] rounded-lg overflow-hidden shadow-inner bg-gray-700 relative">
+                    <iframe id="threeDSMethodIframe" name="threeDSMethodIframe" class="hidden absolute inset-0 w-full h-full bg-white"></iframe>
+                    <div id="methodPlaceholder" class="h-full flex items-center justify-center text-gray-500">
+                        <div class="text-center">
+                            <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <p class="text-lg font-medium text-gray-300">3DS Method frame will appear here</p>
+                            <p class="text-sm mt-2 text-gray-400">Device fingerprinting during authentication flow</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         </div>
     </div>
     
-    <!-- Hidden iframe for 3DS Method -->
-    <iframe id="threeDSMethodIframe" name="threeDSMethodIframe" class="hidden"></iframe>
+    <!-- 3DS Method iframe is now in the methodContainer above -->
     
     <!-- Hidden form for 3DS Method submission -->
     <form id="threeDSMethodForm" class="hidden">

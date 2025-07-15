@@ -19,23 +19,23 @@ export async function performAuth(cardNumber) {
     const authData = {
         threeDSServerTransID: getStateValue('threeDSServerTransID'),
         acctNumber: cardNumber,
-        cardExpiryDate: "2410",
-        acquirerBIN: "123456",
-        acquirerMerchantID: "merchant123456",
-        mcc: "5411",
-        merchantCountryCode: "840",
-        merchantName: "Test Merchant",
+        // cardExpiryDate: "2410", // Optional - already commented
+        acquirerBIN: "123456", // Required for messageCategory 01
+        acquirerMerchantID: "merchant123456", // Required for messageCategory 01
+        mcc: "5411", // Required for messageCategory 01
+        merchantCountryCode: "840", // Required for messageCategory 01
+        merchantName: "Test Merchant", // Required for messageCategory 01
         messageType: "AReq",
         messageVersion: getStateValue('messageVersion'),
         messageCategory: "01",
         deviceChannel: "02",
         threeDSCompInd: getStateValue('threeDSMethodURL') ? 
-            (getStateValue('threeDSMethodCompleted') ? "Y" : "N") : "U",
+            (getStateValue('threeDSMethodCompleted') ? "Y" : "N") : "U", // Proper conditional logic
         threeDSRequestorURL: "https://merchant.example.com",
         threeDSRequestorAuthenticationInd: "01",
         threeDSRequestorChallengeInd: "03",
         browserAcceptHeader: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        browserIP: "192.168.1.11",
+        browserIP: "192.168.1.11", // Optional but recommended for risk assessment
         browserJavaEnabled: true,
         browserJavascriptEnabled: true,
         browserLanguage: "en-US",
@@ -46,21 +46,21 @@ export async function performAuth(cardNumber) {
         browserUserAgent: navigator.userAgent,
         notificationURL: notificationURL,
         transType: "01",
-        purchaseAmount: "10000",
-        purchaseCurrency: "840",
+        purchaseAmount: "0",
+        purchaseCurrency: "208",
         purchaseExponent: "2",
         purchaseDate: generatePurchaseDate(),
-        cardholderName: "Test Cardholder",
-        email: "test@example.com",
-        mobilePhone: {
-            cc: "1",
-            subscriber: "2125551234"
-        },
-        billAddrCity: "New York",
-        billAddrCountry: "840",
-        billAddrLine1: "123 Main Street",
-        billAddrPostCode: "10001",
-        billAddrState: "NY"
+        // cardholderName: "Test Cardholder", // Optional - commented for testing
+        // email: "test@example.com", // Optional - commented for testing
+        // mobilePhone: { // Optional - commented for testing
+        //     cc: "1",
+        //     subscriber: "2125551234"
+        // },
+        // billAddrCity: "New York", // Optional - commented for testing
+        // billAddrCountry: "840", // Optional - commented for testing
+        // billAddrLine1: "123 Main Street", // Optional - commented for testing
+        // billAddrPostCode: "10001", // Optional - commented for testing
+        // billAddrState: "NY" // Optional - commented for testing
     };
     
     const response = await fetch('/api/3ds/auth', {
